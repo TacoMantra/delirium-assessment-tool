@@ -28,7 +28,7 @@ model Patient {
 
 model Gender {
     id      Int       @id @default(autoincrement())
-    gender  String    @db.VarChar(10)
+    gender  String    @db.VarChar(50)
     Patient Patient[]
 }
 
@@ -52,7 +52,7 @@ model Question {
     id              Int               @id @default(autoincrement())
     title           String            @db.VarChar(255)
     content         String            @db.VarChar(255)
-    order           Int
+    order           Int               @unique
     AnswerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
     answerFormatId  Int
     Category        QuestionCategory  @relation(fields: [categoryId], references: [id])
