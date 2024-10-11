@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Patient {
+    id              Int               @id @default(autoincrement())
+    patientguid     String            @db.Uuid
+    createdAt       DateTime          @default(now())
+    firstname       String            @db.VarChar(50)
+    lastname        String            @db.VarChar(50)
+    dateofbirth     DateTime          @db.Date()
+    Gender          Gender            @relation(fields: [genderId], references: [id])
+    genderId        Int
+    RiskAssessment  RiskAssessment[]
+    PatientResponse PatientResponse[]
+}
+
+model Gender {
+    id      Int       @id @default(autoincrement())
+    gender  String    @db.VarChar(10)
+    Patient Patient[]
+}
+
+model RiskAssessment {
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    Patient    Patient  @relation(fields: [patientId], references: [id])
+    patientId  Int
+    Risktype   RiskType @relation(fields: [riskTypeId], references: [id])
+    riskTypeId Int
+}
+
+model RiskType {
+    id             Int              @id @default(autoincrement())
+    name           String           @db.VarChar(50)
+    RiskAssessment RiskAssessment[]
+}
+
+model Question {
+    id              Int               @id @default(autoincrement())
+    title           String            @db.VarChar(255)
+    content         String            @db.VarChar(255)
+    order           Int
+    AnswerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
+    answerFormatId  Int
+    Category        QuestionCategory  @relation(fields: [categoryId], references: [id])
+    categoryId      Int
+    PatientResponse PatientResponse[]
+}
+
+model AnswerFormat {
+    id             Int              @id @default(autoincrement())
+    name           String           @db.VarChar(50)
+    Question       Question[]
+    ResponseOption ResponseOption[]
+}
+
+model QuestionCategory {
+    id       Int        @id @default(autoincrement())
+    name     String     @db.VarChar(50)
+    Question Question[]
+}
+
+model PatientResponse {
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    Patient    Patient  @relation(fields: [patientId], references: [id])
+    patientId  Int
+    Question   Question @relation(fields: [questionId], references: [id])
+    questionId Int
+}
+
+model ResponseOption {
+    id             Int          @id @default(autoincrement())
+    AnswerFormat   AnswerFormat @relation(fields: [answerFormatId], references: [id])
+    answerFormatId Int
+    responsevalue  String       @db.VarChar(255)
+}
