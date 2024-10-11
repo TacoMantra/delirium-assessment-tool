@@ -45,6 +45,7 @@ model RiskType {
     id             Int              @id @default(autoincrement())
     name           String           @db.VarChar(50)
     RiskAssessment RiskAssessment[]
+    DailyResults   DailyResults[]
 }
 
 model Question {
@@ -86,4 +87,12 @@ model ResponseOption {
     AnswerFormat   AnswerFormat @relation(fields: [answerFormatId], references: [id])
     answerFormatId Int
     responsevalue  String       @db.VarChar(255)
+}
+
+model DailyResults {
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    RiskType   RiskType @relation(fields: [riskTypeId], references: [id])
+    riskTypeId Int
+    count      Int
 }
