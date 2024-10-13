@@ -74,19 +74,22 @@ model QuestionCategory {
 }
 
 model PatientResponse {
-    id         Int      @id @default(autoincrement())
-    createdAt  DateTime @default(now())
-    Patient    Patient  @relation(fields: [patientId], references: [id])
-    patientId  Int
-    Question   Question @relation(fields: [questionId], references: [id])
-    questionId Int
+    id               Int            @id @default(autoincrement())
+    createdAt        DateTime       @default(now())
+    Patient          Patient        @relation(fields: [patientId], references: [id])
+    patientId        Int
+    Question         Question       @relation(fields: [questionId], references: [id])
+    questionId       Int
+    ResponseOption   ResponseOption @relation(fields: [responseOptionId], references: [id])
+    responseOptionId Int
 }
 
 model ResponseOption {
-    id             Int          @id @default(autoincrement())
-    AnswerFormat   AnswerFormat @relation(fields: [answerFormatId], references: [id])
-    answerFormatId Int
-    responsevalue  String       @db.VarChar(255)
+    id              Int               @id @default(autoincrement())
+    AnswerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
+    answerFormatId  Int
+    responsevalue   String            @db.VarChar(255)
+    PatientResponse PatientResponse[]
 }
 
 model DailyResults {
