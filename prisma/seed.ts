@@ -170,19 +170,6 @@ const main = async () => {
         ],
     });
 
-    const answerFormatTask = prisma.answerFormat.createMany({
-        data: [{ name: 'yesNo' }, { name: 'confusionLevel' }],
-    });
-
-    const categoryTask = prisma.questionCategory.createMany({
-        data: [
-            { name: 'acuteOrFluctuating' },
-            { name: 'inattention' },
-            { name: 'disorganizedThinking' },
-            { name: 'alteredConsciousness' },
-        ],
-    });
-
     const riskTypeTask = prisma.riskType.createMany({
         data: [
             { name: 'positiveDiagnosis' },
@@ -196,8 +183,6 @@ const main = async () => {
     await Promise.all([
         questionTask,
         genderTask,
-        answerFormatTask,
-        categoryTask,
         riskTypeTask,
         responseOptionTask,
     ]);
