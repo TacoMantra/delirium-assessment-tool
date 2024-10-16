@@ -1,6 +1,6 @@
-# 🦴 Hip Fracture Risk Assessment 🦴
+# 🦴😵 Delirium Risk Assessment 😵🦴
 
-Welcome to the **Hip Fracture Risk Assessment** app! This tool is designed for orthopedic practitioners to assess patients for the risk of hip fractures through a dynamic questionnaire.
+Welcome to the **Delirium Risk Assessment** app! This tool is designed for orthopedic practitioners to assess post-surgical hip fracture patients for the risk of developing delirium through a dynamic questionnaire.
 
 ## 🚀 Getting Started
 
@@ -63,8 +63,8 @@ This app is built using the following technologies:
 
 ## 📝 Features
 
--   **Dynamic Questionnaire** 📋: Practitioners can fill out a series of questions to assess patient risk.
--   **Real-time Evaluation** 💡: Answers are processed to give practitioners immediate feedback on hip fracture risk.
+-   **Dynamic Questionnaire** 📋: Practitioners can fill out a series of questions to assess patient risk for developing delirium.
+-   **Real-time Evaluation** 💡: Answers are processed to give practitioners immediate feedback on delirium risk.
 
 ## 🔧 Available Scripts
 
@@ -138,7 +138,7 @@ If you'd like to contribute, feel free to fork the repo and submit a pull reques
 
 ## 🏥 About
 
-This app is intended for **orthopedic practitioners** to quickly assess a patient’s risk of hip fracture. It aims to simplify the process of gathering relevant data and providing insights to practitioners.
+This app is intended for **orthopedic practitioners** to quickly assess post-surgical hip fracture patients for the risk of developing delirium. It aims to simplify the process of gathering relevant data and providing insights to practitioners.
 
 ---
 
