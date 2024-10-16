@@ -1,40 +1,88 @@
-# Welcome to Remix!
+# 🦴 Hip Fracture Risk Assessment 🦴
 
-- 📖 [Remix docs](https://remix.run/docs)
+Welcome to the **Hip Fracture Risk Assessment** app! This tool is designed for orthopedic practitioners to assess patients for the risk of hip fractures through a dynamic questionnaire.
 
-## Development
+## 🚀 Getting Started
 
-Run the dev server:
+To get the app running on your local machine, follow these steps:
 
-```shellscript
-npm run dev
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone <repository-url>
+cd <repository-directory>
 ```
 
-## Deployment
+### 2. Install Dependencies
 
-First, build your app for production:
+Run the following command to install the required dependencies:
 
-```sh
-npm run build
+```bash
+npm i
 ```
 
-Then run the app in production mode:
+### 3. Start the App
 
-```sh
+After installing the dependencies, start the app with:
+
+```bash
 npm start
 ```
 
-Now you'll need to pick a host to deploy it to.
+This will launch the app at [http://localhost:3000](http://localhost:3000) by default.
 
-### DIY
+## 🛠️ Tech Stack
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+This app is built using the following technologies:
 
-Make sure to deploy the output of `npm run build`
+-   **Remix** ⚡: A full-stack React framework
+-   **React** ⚛️: For building user interfaces
+-   **Prisma** 📚: Database ORM (for future use cases)
+-   **Tailwind CSS** 🎨: For styling
 
-- `build/server`
-- `build/client`
+## 📝 Features
 
-## Styling
+-   **Dynamic Questionnaire** 📋: Practitioners can fill out a series of questions to assess patient risk.
+-   **Real-time Evaluation** 💡: Answers are processed to give practitioners immediate feedback on hip fracture risk.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+## 🧑‍💻 Developer Guide
+
+### Running in Development Mode
+
+Run the app in development mode:
+
+```bash
+npm run dev
+```
+
+This will hot-reload the app as you make changes.
+
+### Building for Production
+
+To build the app for production:
+
+```bash
+npm run build
+```
+
+### Running Tests
+
+To run tests (if available):
+
+```bash
+npm test
+```
+
+## 🤝 Contributing
+
+If you'd like to contribute, feel free to fork the repo and submit a pull request. All contributions are welcome!
+
+## 🏥 About
+
+This app is intended for **orthopedic practitioners** to quickly assess a patient’s risk of hip fracture. It aims to simplify the process of gathering relevant data and providing insights to practitioners.
+
+---
+
+Feel free to reach out if you have any questions or suggestions! 👋
