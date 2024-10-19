@@ -13,9 +13,24 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Account {
+    id       String    @id @default(uuid())
+    email    String    @unique
+    patients Patient[]
+
+    Password Password?
+}
+
+model Password {
+    id        String  @id @default(uuid())
+    salt      String
+    hash      String
+    Account   Account @relation(fields: [accountId], references: [id])
+    accountId String  @unique
+}
+
 model Patient {
-    id              Int               @id @default(autoincrement())
-    patientguid     String            @db.Uuid
+    id              String            @id @default(uuid())
     createdAt       DateTime          @default(now())
     firstname       String            @db.VarChar(50)
     lastname        String            @db.VarChar(50)
@@ -24,6 +39,8 @@ model Patient {
     genderId        Int
     RiskAssessment  RiskAssessment[]
     PatientResponse PatientResponse[]
+    Account         Account?          @relation(fields: [accountId], references: [id])
+    accountId       String?
 }
 
 model Gender {
@@ -36,7 +53,7 @@ model RiskAssessment {
     id         Int      @id @default(autoincrement())
     createdAt  DateTime @default(now())
     Patient    Patient  @relation(fields: [patientId], references: [id])
-    patientId  Int
+    patientId  String
     Risktype   RiskType @relation(fields: [riskTypeId], references: [id])
     riskTypeId Int
 }
@@ -77,7 +94,7 @@ model PatientResponse {
     id               Int            @id @default(autoincrement())
     createdAt        DateTime       @default(now())
     Patient          Patient        @relation(fields: [patientId], references: [id])
-    patientId        Int
+    patientId        String
     Question         Question       @relation(fields: [questionId], references: [id])
     questionId       Int
     ResponseOption   ResponseOption @relation(fields: [responseOptionId], references: [id])
