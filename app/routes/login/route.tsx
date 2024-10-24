@@ -1,10 +1,17 @@
+import {
+    Button,
+    Box,
+    FormLabel,
+    FormControl,
+    TextField,
+    Typography,
+    Stack,
+    Card,
+    styled,
+} from '@mui/material';
 import { json, redirect, type DataFunctionArgs } from '@remix-run/node';
 import { Form, Link, useActionData } from '@remix-run/react';
-
 import { redirectIfLoggedInLoader, setAuthOnResponse } from '~/auth/auth';
-import { Button } from '~/components/button';
-import { Input, Label } from '~/components/input';
-
 import { validate } from './validate';
 import { login } from './queries';
 
@@ -36,84 +43,146 @@ export async function action({ request }: DataFunctionArgs) {
     return setAuthOnResponse(response, userId);
 }
 
-export default function Signup() {
+const StyledCard = styled(Card)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignSelf: 'center',
+    width: '100%',
+    padding: theme.spacing(4),
+    gap: theme.spacing(2),
+    margin: 'auto',
+    [theme.breakpoints.up('sm')]: {
+        maxWidth: '450px',
+    },
+    boxShadow:
+        'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+    ...theme.applyStyles('dark', {
+        boxShadow:
+            'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+    }),
+}));
+
+const SignInContainer = styled(Stack)(({ theme }) => ({
+    minHeight: '100%',
+    padding: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+        padding: theme.spacing(4),
+    },
+    '&::before': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        zIndex: -1,
+        inset: 0,
+        backgroundImage:
+            'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+        backgroundRepeat: 'no-repeat',
+        ...theme.applyStyles('dark', {
+            backgroundImage:
+                'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+        }),
+    },
+}));
+
+export default function SignIn() {
     const actionResult = useActionData<typeof action>();
 
     return (
-        <div className="flex min-h-full flex-1 flex-col mt-20 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2
-                    id="login-header"
-                    className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+        <SignInContainer direction="column" justifyContent="space-between">
+            <StyledCard variant="outlined">
+                <Typography
+                    component="h1"
+                    variant="h4"
+                    sx={{
+                        width: '100%',
+                        fontSize: 'clamp(2rem, 10vw, 2.15rem)',
+                    }}
                 >
-                    Log in
-                </h2>
-            </div>
-
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-                <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-                    <Form className="space-y-6" method="post">
-                        <div>
-                            <Label htmlFor="email">
-                                Email address{' '}
-                                {actionResult?.errors?.email && (
-                                    <span
-                                        id="email-error"
-                                        className="text-brand-red"
-                                    >
-                                        {actionResult.errors.email}
-                                    </span>
-                                )}
-                            </Label>
-                            <Input
+                    Sign in
+                </Typography>
+                <Form method="post">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '100%',
+                            gap: 2,
+                        }}
+                    >
+                        <FormControl>
+                            <FormLabel htmlFor="email">Email</FormLabel>
+                            <TextField
+                                helperText={actionResult?.errors?.email}
                                 id="email"
-                                name="email"
                                 type="email"
+                                name="email"
+                                placeholder="your@email.com"
                                 autoComplete="email"
+                                required
+                                fullWidth
+                                variant="outlined"
+                                color={
+                                    actionResult?.errors?.email
+                                        ? 'error'
+                                        : 'primary'
+                                }
+                                sx={{ ariaLabel: 'email' }}
                                 aria-describedby={
                                     actionResult?.errors?.email
                                         ? 'email-error'
                                         : 'login-header'
                                 }
-                                required
                             />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="password">
-                                {'Password  '}
-                                {actionResult?.errors?.password && (
-                                    <span
-                                        id="password-error"
-                                        className="text-brand-red"
-                                    >
-                                        {actionResult.errors.password}
-                                    </span>
-                                )}
-                            </Label>
-                            <Input
-                                id="password"
+                        </FormControl>
+                        <FormControl>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <FormLabel htmlFor="password">
+                                    Password
+                                </FormLabel>
+                            </Box>
+                            <TextField
+                                error={actionResult?.errors?.password}
+                                helperText={actionResult?.errors?.password}
                                 name="password"
+                                placeholder="••••••"
                                 type="password"
+                                id="password"
                                 autoComplete="current-password"
-                                aria-describedby="password-error"
                                 required
+                                fullWidth
+                                variant="outlined"
+                                color={
+                                    actionResult?.errors?.password
+                                        ? 'error'
+                                        : 'primary'
+                                }
+                                aria-describedby="password-error"
                             />
-                        </div>
-
-                        <div>
-                            <Button type="submit">Sign in</Button>
-                        </div>
-                        <div className="text-sm text-slate-500">
-                            {"Don't have an account?  "}
-                            <Link className="underline" to="/signup">
-                                Sign up
-                            </Link>
-                            .
-                        </div>
-                    </Form>
-                </div>
-            </div>
-        </div>
+                        </FormControl>
+                        <Button type="submit" fullWidth variant="contained">
+                            Sign in
+                        </Button>
+                        <Typography sx={{ textAlign: 'center' }}>
+                            Don&apos;t have an account?{' '}
+                            <span>
+                                <Link to="/signup">
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ alignSelf: 'center' }}
+                                    >
+                                        Sign up
+                                    </Typography>
+                                </Link>
+                            </span>
+                        </Typography>
+                    </Box>
+                </Form>
+            </StyledCard>
+        </SignInContainer>
     );
 }
