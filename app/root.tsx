@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
     Links,
     LiveReload,
@@ -5,79 +6,146 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-    useLoaderData,
-    type ShouldRevalidateFunctionArgs,
-    Link,
+    useRouteError,
+    isRouteErrorResponse,
 } from '@remix-run/react';
-import { redirect, type DataFunctionArgs } from '@remix-run/node';
+import { withEmotionCache } from '@emotion/react';
+import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
+import ClientStyleContext from './ClientStyleContext';
+import Layout from './components/layout';
 
-import { LoginIcon, LogoutIcon } from './icons/icons';
-import { getAuthFromRequest } from './auth/auth';
+interface DocumentProps {
+    children: React.ReactNode;
+    title?: string;
+}
 
-import './styles.css';
+const Document = withEmotionCache(
+    ({ children, title }: DocumentProps, emotionCache) => {
+        const clientStyleData = React.useContext(ClientStyleContext);
 
-export async function loader({ request }: DataFunctionArgs) {
-    const auth = await getAuthFromRequest(request);
-    if (auth && new URL(request.url).pathname === '/') {
-        throw redirect('/home');
+        // Only executed on client
+        useEnhancedEffect(() => {
+            // re-link sheet container
+            emotionCache.sheet.container = document.head;
+            // re-inject tags
+            const tags = emotionCache.sheet.tags;
+            emotionCache.sheet.flush();
+            tags.forEach((tag) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (emotionCache.sheet as any)._insertTag(tag);
+            });
+            // reset cache to reapply global styles
+            clientStyleData.reset();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        return (
+            <html lang="en">
+                <head>
+                    <meta charSet="utf-8" />
+                    <meta
+                        name="viewport"
+                        content="width=device-width,initial-scale=1"
+                    />
+                    {title ? <title>{title}</title> : null}
+                    <Meta />
+                    <Links />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.googleapis.com"
+                    />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.gstatic.com"
+                        crossOrigin=""
+                    />
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+                    />
+                    <meta
+                        name="emotion-insertion-point"
+                        content="emotion-insertion-point"
+                    />
+                </head>
+                <body>
+                    {children}
+                    <ScrollRestoration />
+                    <Scripts />
+                    <LiveReload />
+                </body>
+            </html>
+        );
     }
-    return auth;
-}
+);
 
-export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
-    return formAction && ['/login', '/signup', 'logout'].includes(formAction);
-}
-
+// https://remix.run/docs/en/main/route/component
+// https://remix.run/docs/en/main/file-conventions/routes
 export default function App() {
-    const userId = useLoaderData<typeof loader>();
-
     return (
-        <html lang="en">
-            <head>
-                <meta charSet="utf-8" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
-
-                <Meta />
-                <Links />
-            </head>
-            <body className="h-screen bg-slate-100 text-slate-900">
-                <div className="h-full flex flex-col min-h-0">
-                    <div className="bg-slate-900 border-b border-slate-800 flex items-center justify-between py-4 px-8 box-border">
-                        <div className="w-1/3 flex justify-end">
-                            {userId ? (
-                                <form method="post" action="/logout">
-                                    <button className="block text-center">
-                                        <LogoutIcon />
-                                        <br />
-                                        <span className="text-slate-500 text-xs uppercase font-bold">
-                                            Log out
-                                        </span>
-                                    </button>
-                                </form>
-                            ) : (
-                                <Link to="/login" className="block text-center">
-                                    <LoginIcon />
-                                    <br />
-                                    <span className="text-slate-500 text-xs uppercase font-bold">
-                                        Log in
-                                    </span>
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex-grow min-h-0 h-full">
-                        <Outlet />
-                    </div>
-                </div>
-
-                <ScrollRestoration />
-                <LiveReload />
-                <Scripts />
-            </body>
-        </html>
+        <Document>
+            <Layout>
+                <Outlet />
+            </Layout>
+        </Document>
     );
+}
+
+// https://remix.run/docs/en/main/route/error-boundary
+export function ErrorBoundary() {
+    const error = useRouteError();
+
+    if (isRouteErrorResponse(error)) {
+        let message;
+        switch (error.status) {
+            case 401:
+                message = (
+                    <p>
+                        Oops! Looks like you tried to visit a page that you do
+                        not have access to.
+                    </p>
+                );
+                break;
+            case 404:
+                message = (
+                    <p>
+                        Oops! Looks like you tried to visit a page that does not
+                        exist.
+                    </p>
+                );
+                break;
+
+            default:
+                throw new Error(error.data || error.statusText);
+        }
+
+        return (
+            <Document title={`${error.status} ${error.statusText}`}>
+                <Layout>
+                    <h1>
+                        {error.status}: {error.statusText}
+                    </h1>
+                    {message}
+                </Layout>
+            </Document>
+        );
+    }
+
+    if (error instanceof Error) {
+        console.error(error);
+        return (
+            <Document title="Error!">
+                <Layout>
+                    <div>
+                        <h1>There was an error</h1>
+                        <p>{error.message}</p>
+                        <hr />
+                        <p>We apologize for the inconvenience.</p>
+                    </div>
+                </Layout>
+            </Document>
+        );
+    }
+
+    return <h1>Unknown Error</h1>;
 }
