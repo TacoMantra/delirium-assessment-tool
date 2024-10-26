@@ -5,11 +5,6 @@ import {
     toggleButtonGroupClasses,
     toggleButtonClasses,
 } from '@mui/material';
-import {
-    CheckBoxOutlineBlankRounded,
-    CheckRounded,
-    RemoveRounded,
-} from '@mui/icons-material';
 import { gray, brand } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
@@ -326,13 +321,6 @@ export const inputsCustomizations: Components<Theme> = {
     MuiCheckbox: {
         defaultProps: {
             disableRipple: true,
-            icon: (
-                <CheckBoxOutlineBlankRounded
-                    sx={{ color: 'hsla(210, 0%, 0%, 0.0)' }}
-                />
-            ),
-            checkedIcon: <CheckRounded sx={{ height: 14, width: 14 }} />,
-            indeterminateIcon: <RemoveRounded sx={{ height: 14, width: 14 }} />,
         },
         styleOverrides: {
             root: ({ theme }) => ({

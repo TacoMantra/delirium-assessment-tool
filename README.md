@@ -59,7 +59,6 @@ This app is built using the following technologies:
 -   **React** ⚛️: For building user interfaces
 -   **Prisma** 📚: Database ORM (for future use cases)
 -   **PostgreSQL** 🐘: The relational database used for data storage
--   **Tailwind CSS** 🎨: For styling
 
 ## 📝 Features
 
