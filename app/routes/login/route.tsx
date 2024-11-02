@@ -11,8 +11,7 @@ import { Form, Link, useActionData } from '@remix-run/react';
 import { redirectIfLoggedInLoader, setAuthOnResponse } from '~/auth/auth';
 import { validate } from './validate';
 import { login } from './queries';
-import StyledCard from '~/components/styledCard';
-import SignInContainer from '~/components/signInContainer';
+import StyledCard from '~/components/StyledCard';
 
 export const loader = redirectIfLoggedInLoader;
 
@@ -46,102 +45,98 @@ export default function LogIn() {
     const actionResult = useActionData<typeof action>();
 
     return (
-        <SignInContainer direction="column" justifyContent="space-between">
-            <StyledCard variant="outlined">
-                <Typography
-                    component="h1"
-                    variant="h4"
+        <StyledCard variant="outlined">
+            <Typography
+                component="h1"
+                variant="h4"
+                sx={{
+                    width: '100%',
+                    fontSize: 'clamp(2rem, 10vw, 2.15rem)',
+                }}
+            >
+                Sign in
+            </Typography>
+            <Form method="post">
+                <Box
                     sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
                         width: '100%',
-                        fontSize: 'clamp(2rem, 10vw, 2.15rem)',
+                        gap: 2,
                     }}
                 >
-                    Sign in
-                </Typography>
-                <Form method="post">
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '100%',
-                            gap: 2,
-                        }}
-                    >
-                        <FormControl>
-                            <FormLabel htmlFor="email">Email</FormLabel>
-                            <TextField
-                                helperText={actionResult?.errors?.email}
-                                id="email"
-                                type="email"
-                                name="email"
-                                placeholder="your@email.com"
-                                autoComplete="email"
-                                required
-                                fullWidth
-                                variant="outlined"
-                                color={
-                                    actionResult?.errors?.email
-                                        ? 'error'
-                                        : 'primary'
-                                }
-                                sx={{ ariaLabel: 'email' }}
-                                aria-describedby={
-                                    actionResult?.errors?.email
-                                        ? 'email-error'
-                                        : 'login-header'
-                                }
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <FormLabel htmlFor="password">
-                                    Password
-                                </FormLabel>
-                            </Box>
-                            <TextField
-                                error={actionResult?.errors?.password}
-                                helperText={actionResult?.errors?.password}
-                                name="password"
-                                placeholder="••••••"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                required
-                                fullWidth
-                                variant="outlined"
-                                color={
-                                    actionResult?.errors?.password
-                                        ? 'error'
-                                        : 'primary'
-                                }
-                                aria-describedby="password-error"
-                            />
-                        </FormControl>
-                        <Button type="submit" fullWidth variant="contained">
-                            Sign in
-                        </Button>
-                        <Typography sx={{ textAlign: 'center' }}>
-                            Don&apos;t have an account?{' '}
-                            <span>
-                                <Link to="/signup">
-                                    <Typography
-                                        component="span"
-                                        variant="body2"
-                                        sx={{ alignSelf: 'center' }}
-                                    >
-                                        Sign up
-                                    </Typography>
-                                </Link>
-                            </span>
-                        </Typography>
-                    </Box>
-                </Form>
-            </StyledCard>
-        </SignInContainer>
+                    <FormControl>
+                        <FormLabel htmlFor="email">Email</FormLabel>
+                        <TextField
+                            helperText={actionResult?.errors?.email}
+                            id="email"
+                            type="email"
+                            name="email"
+                            placeholder="your@email.com"
+                            autoComplete="email"
+                            required
+                            fullWidth
+                            variant="outlined"
+                            color={
+                                actionResult?.errors?.email
+                                    ? 'error'
+                                    : 'primary'
+                            }
+                            sx={{ ariaLabel: 'email' }}
+                            aria-describedby={
+                                actionResult?.errors?.email
+                                    ? 'email-error'
+                                    : 'login-header'
+                            }
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <FormLabel htmlFor="password">Password</FormLabel>
+                        </Box>
+                        <TextField
+                            error={actionResult?.errors?.password}
+                            helperText={actionResult?.errors?.password}
+                            name="password"
+                            placeholder="••••••"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            required
+                            fullWidth
+                            variant="outlined"
+                            color={
+                                actionResult?.errors?.password
+                                    ? 'error'
+                                    : 'primary'
+                            }
+                            aria-describedby="password-error"
+                        />
+                    </FormControl>
+                    <Button type="submit" fullWidth variant="contained">
+                        Sign in
+                    </Button>
+                    <Typography sx={{ textAlign: 'center' }}>
+                        Don&apos;t have an account?{' '}
+                        <span>
+                            <Link to="/signup">
+                                <Typography
+                                    component="span"
+                                    variant="body2"
+                                    sx={{ alignSelf: 'center' }}
+                                >
+                                    Sign up
+                                </Typography>
+                            </Link>
+                        </span>
+                    </Typography>
+                </Box>
+            </Form>
+        </StyledCard>
     );
 }

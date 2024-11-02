@@ -9,6 +9,7 @@ import {
 import { getMuiLinks } from './mui/getMuiLinks';
 import { LinksFunction } from '@remix-run/node';
 import { MuiDocument } from './mui/MuiDocument';
+import AppContainer from './components/AppContainer';
 
 export const links: LinksFunction = () => [...getMuiLinks()];
 
@@ -25,7 +26,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Links />
             </head>
             <body>
-                {children}
+                <AppContainer direction="column" justifyContent="space-between">
+                    {children}
+                </AppContainer>
                 <ScrollRestoration />
                 <Scripts />
             </body>

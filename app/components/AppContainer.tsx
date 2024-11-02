@@ -1,6 +1,6 @@
 import { Stack, styled } from '@mui/material';
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const AppContainer = styled(Stack)(({ theme }) => ({
     minHeight: '100%',
     padding: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
@@ -22,4 +22,4 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     },
 }));
 
-export default SignInContainer;
+export default AppContainer;

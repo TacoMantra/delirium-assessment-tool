@@ -1,9 +1,12 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
+import { redirectIfLoggedInLoader } from '~/auth/auth';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'Delirium Assessment Tool' }];
 };
+
+export const loader = redirectIfLoggedInLoader;
 
 export default function Index() {
     return (
