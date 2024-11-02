@@ -1,7 +1,5 @@
+import { alpha, Theme, Components } from '@mui/material/styles';
 import {
-    alpha,
-    Theme,
-    Components,
     outlinedInputClasses,
     svgIconClasses,
     toggleButtonGroupClasses,
