@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ThemeProvider, createTheme, ThemeOptions } from '@mui/material/styles';
+import { ThemeProvider, createTheme, ThemeOptions } from '@mui/material';
 import { inputsCustomizations } from './customizations/inputs';
 import { dataDisplayCustomizations } from './customizations/dataDisplay';
 import { feedbackCustomizations } from './customizations/feedback';
