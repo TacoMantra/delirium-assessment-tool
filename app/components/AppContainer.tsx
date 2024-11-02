@@ -1,5 +1,4 @@
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material';
+import { Stack, styled } from '@mui/material';
 
 const AppContainer = styled(Stack)(({ theme }) => ({
     minHeight: '100%',
