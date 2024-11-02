@@ -1,4 +1,6 @@
-import { Box, Stack, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import { redirectIfLoggedInLoader } from '~/auth/auth';

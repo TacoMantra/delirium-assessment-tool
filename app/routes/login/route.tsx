@@ -1,11 +1,10 @@
-import {
-    Button,
-    Box,
-    FormLabel,
-    FormControl,
-    TextField,
-    Typography,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+
 import { json, redirect, type DataFunctionArgs } from '@remix-run/node';
 import { Form, Link, useActionData } from '@remix-run/react';
 import { redirectIfLoggedInLoader, setAuthOnResponse } from '~/auth/auth';
