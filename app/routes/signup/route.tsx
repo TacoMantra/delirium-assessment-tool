@@ -12,7 +12,6 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 
 export const loader = redirectIfLoggedInLoader;
 
@@ -40,7 +39,6 @@ export default function Signup() {
 
     return (
         <StyledCard variant="outlined">
-            <ChevronLeftRoundedIcon />
             <Typography
                 component="h1"
                 variant="h4"
