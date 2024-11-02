@@ -12,6 +12,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import AppAppBar from '~/components/AppAppBar';
 
 export const loader = redirectIfLoggedInLoader;
 
@@ -38,98 +39,103 @@ export default function Signup() {
     const actionResult = useActionData<typeof action>();
 
     return (
-        <StyledCard variant="outlined">
-            <Typography
-                component="h1"
-                variant="h4"
-                sx={{
-                    width: '100%',
-                    fontSize: 'clamp(2rem, 10vw, 2.15rem)',
-                }}
-            >
-                Sign Up
-            </Typography>
-            <Form method="post">
-                <Box
+        <>
+            <AppAppBar isAuthed={false} />
+            <StyledCard variant="outlined">
+                <Typography
+                    component="h1"
+                    variant="h4"
                     sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
                         width: '100%',
-                        gap: 2,
+                        fontSize: 'clamp(2rem, 10vw, 2.15rem)',
                     }}
                 >
-                    <FormControl>
-                        <FormLabel htmlFor="email">Email</FormLabel>
-                        <TextField
-                            helperText={actionResult?.errors?.email}
-                            id="email"
-                            type="email"
-                            name="email"
-                            placeholder="your@email.com"
-                            autoComplete="email"
-                            required
-                            fullWidth
-                            variant="outlined"
-                            color={
-                                actionResult?.errors?.email
-                                    ? 'error'
-                                    : 'primary'
-                            }
-                            sx={{ ariaLabel: 'email' }}
-                            aria-describedby={
-                                actionResult?.errors?.email
-                                    ? 'email-error'
-                                    : 'login-header'
-                            }
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <FormLabel htmlFor="password">Password</FormLabel>
-                        </Box>
-                        <TextField
-                            error={actionResult?.errors?.password}
-                            helperText={actionResult?.errors?.password}
-                            name="password"
-                            placeholder="••••••"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            required
-                            fullWidth
-                            variant="outlined"
-                            color={
-                                actionResult?.errors?.password
-                                    ? 'error'
-                                    : 'primary'
-                            }
-                            aria-describedby="password-error"
-                        />
-                    </FormControl>
-                    <Button type="submit" fullWidth variant="contained">
-                        Sign up
-                    </Button>
-                    <Typography sx={{ textAlign: 'center' }}>
-                        Already have an account?{' '}
-                        <span>
-                            <Link to="/login">
-                                <Typography
-                                    component="span"
-                                    variant="body2"
-                                    sx={{ alignSelf: 'center' }}
-                                >
-                                    Sign in
-                                </Typography>
-                            </Link>
-                        </span>
-                    </Typography>
-                </Box>
-            </Form>
-        </StyledCard>
+                    Sign Up
+                </Typography>
+                <Form method="post">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '100%',
+                            gap: 2,
+                        }}
+                    >
+                        <FormControl>
+                            <FormLabel htmlFor="email">Email</FormLabel>
+                            <TextField
+                                helperText={actionResult?.errors?.email}
+                                id="email"
+                                type="email"
+                                name="email"
+                                placeholder="your@email.com"
+                                autoComplete="email"
+                                required
+                                fullWidth
+                                variant="outlined"
+                                color={
+                                    actionResult?.errors?.email
+                                        ? 'error'
+                                        : 'primary'
+                                }
+                                sx={{ ariaLabel: 'email' }}
+                                aria-describedby={
+                                    actionResult?.errors?.email
+                                        ? 'email-error'
+                                        : 'login-header'
+                                }
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <FormLabel htmlFor="password">
+                                    Password
+                                </FormLabel>
+                            </Box>
+                            <TextField
+                                error={actionResult?.errors?.password}
+                                helperText={actionResult?.errors?.password}
+                                name="password"
+                                placeholder="••••••"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                required
+                                fullWidth
+                                variant="outlined"
+                                color={
+                                    actionResult?.errors?.password
+                                        ? 'error'
+                                        : 'primary'
+                                }
+                                aria-describedby="password-error"
+                            />
+                        </FormControl>
+                        <Button type="submit" fullWidth variant="contained">
+                            Sign up
+                        </Button>
+                        <Typography sx={{ textAlign: 'center' }}>
+                            Already have an account?{' '}
+                            <span>
+                                <Link to="/login">
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        sx={{ alignSelf: 'center' }}
+                                    >
+                                        Sign in
+                                    </Typography>
+                                </Link>
+                            </span>
+                        </Typography>
+                    </Box>
+                </Form>
+            </StyledCard>
+        </>
     );
 }

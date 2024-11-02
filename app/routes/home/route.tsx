@@ -15,11 +15,7 @@ export const meta = () => {
 // }
 
 export default function Home() {
-    return (
-        <div className="h-full">
-            <AppAppBar />
-        </div>
-    );
+    return <AppAppBar isAuthed={true} />;
 }
 
 // function Patients() {

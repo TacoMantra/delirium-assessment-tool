@@ -12,6 +12,11 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import logo from '../assets/logo.png';
+import { Link } from '@remix-run/react';
+
+interface IAppAppBarProps {
+    isAuthed: boolean;
+}
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     display: 'flex',
@@ -27,7 +32,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: '8px 12px',
 }));
 
-export default function AppAppBar() {
+export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -61,15 +66,42 @@ export default function AppAppBar() {
                             alt="Delirium Assessment Tool Logo"
                         />
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <Button variant="text" color="info" size="small">
-                                Dashboard
-                            </Button>
-                            <Button variant="text" color="info" size="small">
-                                New Patient
-                            </Button>
-                            <Button variant="text" color="info" size="small">
-                                All Patients
-                            </Button>
+                            {isAuthed ? (
+                                <>
+                                    <Button
+                                        variant="text"
+                                        color="info"
+                                        size="small"
+                                    >
+                                        Dashboard
+                                    </Button>
+                                    <Button
+                                        variant="text"
+                                        color="info"
+                                        size="small"
+                                    >
+                                        New Patient
+                                    </Button>
+                                    <Button
+                                        variant="text"
+                                        color="info"
+                                        size="small"
+                                    >
+                                        All Patients
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button
+                                        variant="text"
+                                        color="info"
+                                        size="small"
+                                        href="/"
+                                    >
+                                        Home
+                                    </Button>
+                                </>
+                            )}
                         </Box>
                     </Box>
                     <Box
@@ -79,16 +111,37 @@ export default function AppAppBar() {
                             alignItems: 'center',
                         }}
                     >
-                        <form method="post" action="/logout">
-                            <Button
-                                type="submit"
-                                color="primary"
-                                variant="text"
-                                size="small"
-                            >
-                                Sign Out
-                            </Button>
-                        </form>
+                        {isAuthed ? (
+                            <form method="post" action="/logout">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    variant="text"
+                                    size="small"
+                                >
+                                    Sign Out
+                                </Button>
+                            </form>
+                        ) : (
+                            <>
+                                <Button
+                                    color="primary"
+                                    variant="text"
+                                    size="small"
+                                    href="/signup"
+                                >
+                                    Sign Up
+                                </Button>
+                                <Button
+                                    color="secondary"
+                                    variant="text"
+                                    size="small"
+                                    href="/login"
+                                >
+                                    Sign In
+                                </Button>
+                            </>
+                        )}
                     </Box>
                     <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
                         <IconButton
@@ -120,21 +173,40 @@ export default function AppAppBar() {
                                     </IconButton>
                                 </Box>
                                 <Divider sx={{ my: 3 }} />
-                                <MenuItem>Dashboard</MenuItem>
-                                <MenuItem>New Patient</MenuItem>
-                                <MenuItem>All Patients</MenuItem>
-                                <MenuItem>
-                                    <form method="post" action="/logout">
-                                        <Button
-                                            type="submit"
-                                            color="primary"
-                                            variant="outlined"
-                                            fullWidth
-                                        >
-                                            Sign out
-                                        </Button>
-                                    </form>
-                                </MenuItem>
+                                {isAuthed ? (
+                                    <>
+                                        <MenuItem>Dashboard</MenuItem>
+                                        <MenuItem>New Patient</MenuItem>
+                                        <MenuItem>All Patients</MenuItem>
+                                        <MenuItem>
+                                            <form
+                                                method="post"
+                                                action="/logout"
+                                            >
+                                                <Button
+                                                    type="submit"
+                                                    color="primary"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                >
+                                                    Sign out
+                                                </Button>
+                                            </form>
+                                        </MenuItem>
+                                    </>
+                                ) : (
+                                    <>
+                                        <MenuItem>
+                                            <Link to="/">Home</Link>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <Link to="/signup">Sign Up</Link>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <Link to="/login">Sign In</Link>
+                                        </MenuItem>
+                                    </>
+                                )}
                             </Box>
                         </Drawer>
                     </Box>
