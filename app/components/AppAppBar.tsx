@@ -72,6 +72,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                         variant="text"
                                         color="info"
                                         size="small"
+                                        component={Link}
+                                        to="/home"
                                     >
                                         Dashboard
                                     </Button>
@@ -96,7 +98,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                         variant="text"
                                         color="info"
                                         size="small"
-                                        href="/"
+                                        component={Link}
+                                        to="/"
                                     >
                                         Home
                                     </Button>
@@ -128,7 +131,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                     color="primary"
                                     variant="text"
                                     size="small"
-                                    href="/signup"
+                                    component={Link}
+                                    to="/signup"
                                 >
                                     Sign Up
                                 </Button>
@@ -136,7 +140,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                     color="secondary"
                                     variant="text"
                                     size="small"
-                                    href="/login"
+                                    component={Link}
+                                    to="/login"
                                 >
                                     Sign In
                                 </Button>
