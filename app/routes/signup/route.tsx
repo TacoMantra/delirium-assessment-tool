@@ -13,6 +13,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 
 export const loader = redirectIfLoggedInLoader;
 
@@ -41,6 +42,7 @@ export default function Signup() {
     return (
         <SignInContainer direction="column" justifyContent="space-between">
             <StyledCard variant="outlined">
+                <ChevronLeftRoundedIcon />
                 <Typography
                     component="h1"
                     variant="h4"
@@ -116,7 +118,7 @@ export default function Signup() {
                             />
                         </FormControl>
                         <Button type="submit" fullWidth variant="contained">
-                            Sign in
+                            Sign up
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Already have an account?{' '}
