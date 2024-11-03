@@ -1,7 +1,7 @@
 import { CacheProvider } from '@emotion/react';
-
+import { ThemeProvider } from '@mui/material';
 import createCache from '@emotion/cache';
-import AppTheme from './theme/AppTheme';
+import theme from './theme/theme';
 
 function createEmotionCache() {
     return createCache({ key: 'css' });
@@ -12,7 +12,7 @@ export function MuiProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <CacheProvider value={cache}>
-            <AppTheme>{children}</AppTheme>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </CacheProvider>
     );
 }

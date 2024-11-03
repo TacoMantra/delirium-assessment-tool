@@ -6,21 +6,12 @@ import {
     ScrollRestoration,
     useRouteError,
 } from '@remix-run/react';
-
 import { getMuiLinks } from './mui/getMuiLinks';
 import { LinksFunction } from '@remix-run/node';
-// import { DataFunctionArgs, LinksFunction, redirect } from '@remix-run/node';
 import { MuiDocument } from './mui/MuiDocument';
 import AppContainer from './components/AppContainer';
-// import { getAuthFromRequest } from './auth/auth';
-
-// export async function loader({ request }: DataFunctionArgs) {
-//     const auth = await getAuthFromRequest(request);
-//     if (auth && new URL(request.url).pathname === '/') {
-//         throw redirect('/home');
-//     }
-//     return auth;
-// }
+import StyledCard from './components/StyledCard';
+import { Typography } from '@mui/material';
 
 export const links: LinksFunction = () => [...getMuiLinks()];
 
@@ -35,7 +26,15 @@ export function ErrorBoundary() {
                 <Links />
             </head>
             <body>
-                Looks like we encountered a problem.
+                <AppContainer direction="column" justifyContent="space-between">
+                    <StyledCard>
+                        <Typography variant="h1">Oh no!</Typography>
+                        <Typography>
+                            Looks like we encountered a problem. Please refresh
+                            and try again.
+                        </Typography>
+                    </StyledCard>
+                </AppContainer>
                 <Scripts />
             </body>
         </html>

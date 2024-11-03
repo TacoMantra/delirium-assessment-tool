@@ -1,5 +1,7 @@
-import { Theme, alpha, Components } from '@mui/material/styles';
 import {
+    Theme,
+    alpha,
+    Components,
     svgIconClasses,
     typographyClasses,
     buttonBaseClasses,
@@ -26,7 +28,7 @@ export const dataDisplayCustomizations: Components<Theme> = {
                 [`& .${svgIconClasses.root}`]: {
                     width: '1rem',
                     height: '1rem',
-                    color: (theme.cssVariables || theme).palette.text.secondary,
+                    color: theme.palette.text.secondary,
                 },
                 [`& .${typographyClasses.root}`]: {
                     fontWeight: 500,
@@ -35,8 +37,7 @@ export const dataDisplayCustomizations: Components<Theme> = {
                     display: 'flex',
                     gap: 8,
                     padding: '2px 8px',
-                    borderRadius: (theme.cssVariables || theme).shape
-                        .borderRadius,
+                    borderRadius: theme.shape.borderRadius,
                     opacity: 0.7,
                     '&.Mui-selected': {
                         opacity: 1,
@@ -45,8 +46,7 @@ export const dataDisplayCustomizations: Components<Theme> = {
                             0.3
                         ),
                         [`& .${svgIconClasses.root}`]: {
-                            color: (theme.cssVariables || theme).palette.text
-                                .primary,
+                            color: theme.palette.text.primary,
                         },
                         '&:focus-visible': {
                             backgroundColor: alpha(

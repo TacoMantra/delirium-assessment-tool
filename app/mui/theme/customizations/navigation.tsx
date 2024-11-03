@@ -1,5 +1,7 @@
-import { Theme, alpha, Components } from '@mui/material/styles';
 import {
+    Theme,
+    alpha,
+    Components,
     buttonBaseClasses,
     dividerClasses,
     menuItemClasses,
@@ -13,7 +15,7 @@ export const navigationCustomizations: Components<Theme> = {
     MuiMenuItem: {
         styleOverrides: {
             root: ({ theme }) => ({
-                borderRadius: (theme.cssVariables || theme).shape.borderRadius,
+                borderRadius: theme.shape.borderRadius,
                 padding: '6px 8px',
                 [`&.${menuItemClasses.focusVisible}`]: {
                     backgroundColor: 'transparent',
@@ -39,10 +41,8 @@ export const navigationCustomizations: Components<Theme> = {
             },
             paper: ({ theme }) => ({
                 marginTop: '4px',
-                borderRadius: (theme.cssVariables || theme).shape.borderRadius,
-                border: `1px solid ${
-                    (theme.cssVariables || theme).palette.divider
-                }`,
+                borderRadius: theme.shape.borderRadius,
+                border: `1px solid ${theme.palette.divider}`,
                 backgroundImage: 'none',
                 background: 'hsl(0, 0%, 100%)',
                 boxShadow:
@@ -66,16 +66,14 @@ export const navigationCustomizations: Components<Theme> = {
     MuiSelect: {
         styleOverrides: {
             root: ({ theme }) => ({
-                borderRadius: (theme.cssVariables || theme).shape.borderRadius,
+                borderRadius: theme.shape.borderRadius,
                 border: '1px solid',
                 borderColor: gray[200],
-                backgroundColor: (theme.cssVariables || theme).palette
-                    .background.paper,
+                backgroundColor: theme.palette.background.paper,
                 boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
                 '&:hover': {
                     borderColor: gray[300],
-                    backgroundColor: (theme.cssVariables || theme).palette
-                        .background.paper,
+                    backgroundColor: theme.palette.background.paper,
                     boxShadow: 'none',
                 },
                 [`&.${selectClasses.focused}`]: {
@@ -87,19 +85,16 @@ export const navigationCustomizations: Components<Theme> = {
                 },
 
                 ...theme.applyStyles('dark', {
-                    borderRadius: (theme.cssVariables || theme).shape
-                        .borderRadius,
+                    borderRadius: theme.shape.borderRadius,
                     borderColor: gray[700],
-                    backgroundColor: (theme.cssVariables || theme).palette
-                        .background.paper,
+                    backgroundColor: theme.palette.background.paper,
                     boxShadow: `inset 0 1px 0 1px ${alpha(
                         gray[700],
                         0.15
                     )}, inset 0 -1px 0 1px hsla(220, 0%, 0%, 0.7)`,
                     '&:hover': {
                         borderColor: alpha(gray[700], 0.7),
-                        backgroundColor: (theme.cssVariables || theme).palette
-                            .background.paper,
+                        backgroundColor: theme.palette.background.paper,
                         boxShadow: 'none',
                     },
                     [`&.${selectClasses.focused}`]: {
@@ -130,7 +125,7 @@ export const navigationCustomizations: Components<Theme> = {
         },
         styleOverrides: {
             root: ({ theme }) => ({
-                color: (theme.cssVariables || theme).palette.text.primary,
+                color: theme.palette.text.primary,
                 fontWeight: 500,
                 position: 'relative',
                 textDecoration: 'none',
@@ -142,8 +137,7 @@ export const navigationCustomizations: Components<Theme> = {
                     height: '1px',
                     bottom: 0,
                     left: 0,
-                    backgroundColor: (theme.cssVariables || theme).palette.text
-                        .secondary,
+                    backgroundColor: theme.palette.text.secondary,
                     opacity: 0.3,
                     transition: 'width 0.3s ease, opacity 0.3s ease',
                 },
@@ -161,8 +155,7 @@ export const navigationCustomizations: Components<Theme> = {
     MuiDrawer: {
         styleOverrides: {
             paper: ({ theme }) => ({
-                backgroundColor: (theme.cssVariables || theme).palette
-                    .background.default,
+                backgroundColor: theme.palette.background.default,
             }),
         },
     },
@@ -171,14 +164,12 @@ export const navigationCustomizations: Components<Theme> = {
             root: ({ theme }) => ({
                 '&.Mui-selected': {
                     color: 'white',
-                    backgroundColor: (theme.cssVariables || theme).palette
-                        .grey[900],
+                    backgroundColor: theme.palette.grey[900],
                 },
                 ...theme.applyStyles('dark', {
                     '&.Mui-selected': {
                         color: 'black',
-                        backgroundColor: (theme.cssVariables || theme).palette
-                            .grey[50],
+                        backgroundColor: theme.palette.grey[50],
                     },
                 }),
             }),
@@ -188,11 +179,9 @@ export const navigationCustomizations: Components<Theme> = {
         styleOverrides: {
             root: { minHeight: 'fit-content' },
             indicator: ({ theme }) => ({
-                backgroundColor: (theme.cssVariables || theme).palette
-                    .grey[800],
+                backgroundColor: theme.palette.grey[800],
                 ...theme.applyStyles('dark', {
-                    backgroundColor: (theme.cssVariables || theme).palette
-                        .grey[200],
+                    backgroundColor: theme.palette.grey[200],
                 }),
             }),
         },
@@ -205,12 +194,12 @@ export const navigationCustomizations: Components<Theme> = {
                 textTransform: 'none',
                 minWidth: 'fit-content',
                 minHeight: 'fit-content',
-                color: (theme.cssVariables || theme).palette.text.secondary,
-                borderRadius: (theme.cssVariables || theme).shape.borderRadius,
+                color: theme.palette.text.secondary,
+                borderRadius: theme.shape.borderRadius,
                 border: '1px solid',
                 borderColor: 'transparent',
                 ':hover': {
-                    color: (theme.cssVariables || theme).palette.text.primary,
+                    color: theme.palette.text.primary,
                     backgroundColor: gray[100],
                     borderColor: gray[200],
                 },
@@ -219,8 +208,7 @@ export const navigationCustomizations: Components<Theme> = {
                 },
                 ...theme.applyStyles('dark', {
                     ':hover': {
-                        color: (theme.cssVariables || theme).palette.text
-                            .primary,
+                        color: theme.palette.text.primary,
                         backgroundColor: gray[800],
                         borderColor: gray[700],
                     },
@@ -235,7 +223,7 @@ export const navigationCustomizations: Components<Theme> = {
         styleOverrides: {
             line: ({ theme }) => ({
                 borderTop: '1px solid',
-                borderColor: (theme.cssVariables || theme).palette.divider,
+                borderColor: theme.palette.divider,
                 flex: 1,
                 borderRadius: '99px',
             }),
@@ -254,23 +242,21 @@ export const navigationCustomizations: Components<Theme> = {
                 },
                 '&.Mui-active': {
                     border: 'none',
-                    color: (theme.cssVariables || theme).palette.primary.main,
+                    color: theme.palette.primary.main,
                 },
                 '&.Mui-completed': {
                     border: 'none',
-                    color: (theme.cssVariables || theme).palette.success.main,
+                    color: theme.palette.success.main,
                 },
                 ...theme.applyStyles('dark', {
                     border: `1px solid ${gray[700]}`,
                     '&.Mui-active': {
                         border: 'none',
-                        color: (theme.cssVariables || theme).palette.primary
-                            .light,
+                        color: theme.palette.primary.light,
                     },
                     '&.Mui-completed': {
                         border: 'none',
-                        color: (theme.cssVariables || theme).palette.success
-                            .light,
+                        color: theme.palette.success.light,
                     },
                 }),
                 variants: [
