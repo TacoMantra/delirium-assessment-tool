@@ -20,7 +20,7 @@ export async function createAccount(email: string, password: string) {
     return prisma.account.create({
         data: {
             email: email,
-            Password: { create: { hash, salt } },
+            password: { create: { hash, salt } },
         },
     });
 }
