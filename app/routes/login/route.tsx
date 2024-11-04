@@ -23,8 +23,8 @@ export const meta = () => {
 
 export async function action({ request }: DataFunctionArgs) {
     const formData = await request.formData();
-    const email = String(formData.get('email') || '');
-    const password = String(formData.get('password') || '');
+    const email = String(formData.get('email') ?? '');
+    const password = String(formData.get('password') ?? '');
 
     const errors = validate(email, password);
     if (errors) {
