@@ -83,6 +83,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                         variant="text"
                                         color="info"
                                         size="small"
+                                        component={Link}
+                                        to="/new-patient"
                                     >
                                         New Patient
                                     </Button>
