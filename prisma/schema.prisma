@@ -17,15 +17,14 @@ model Account {
     id       String    @id @default(uuid())
     email    String    @unique
     patients Patient[]
-
-    Password Password?
+    password Password?
 }
 
 model Password {
     id        String  @id @default(uuid())
     salt      String
     hash      String
-    Account   Account @relation(fields: [accountId], references: [id])
+    account   Account @relation(fields: [accountId], references: [id])
     accountId String  @unique
 }
 
@@ -35,78 +34,78 @@ model Patient {
     firstname       String            @db.VarChar(50)
     lastname        String            @db.VarChar(50)
     dateofbirth     DateTime          @db.Date()
-    Gender          Gender            @relation(fields: [genderId], references: [id])
-    genderId        Int
-    RiskAssessment  RiskAssessment[]
-    PatientResponse PatientResponse[]
-    Account         Account?          @relation(fields: [accountId], references: [id])
+    gender          Gender?           @relation(fields: [genderId], references: [id])
+    genderId        Int?
+    riskAssessment  RiskAssessment[]
+    patientResponse PatientResponse[]
+    account         Account?          @relation(fields: [accountId], references: [id])
     accountId       String?
 }
 
 model Gender {
     id      Int       @id @default(autoincrement())
-    gender  String    @db.VarChar(50)
-    Patient Patient[]
+    gender  String    @unique @db.VarChar(50)
+    patient Patient[]
 }
 
 model RiskAssessment {
     id         Int      @id @default(autoincrement())
     createdAt  DateTime @default(now())
-    Patient    Patient  @relation(fields: [patientId], references: [id])
+    patient    Patient  @relation(fields: [patientId], references: [id])
     patientId  String
-    Risktype   RiskType @relation(fields: [riskTypeId], references: [id])
+    risktype   RiskType @relation(fields: [riskTypeId], references: [id])
     riskTypeId Int
 }
 
 model RiskType {
     id             Int              @id @default(autoincrement())
-    name           String           @db.VarChar(50)
-    RiskAssessment RiskAssessment[]
-    DailyResults   DailyResults[]
+    name           String           @unique @db.VarChar(50)
+    riskAssessment RiskAssessment[]
+    dailyResults   DailyResults[]
 }
 
 model Question {
     id              Int               @id @default(autoincrement())
-    title           String            @db.VarChar(255)
+    title           String            @unique @db.VarChar(255)
     content         String            @db.VarChar(255)
     order           Int               @unique
-    AnswerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
+    answerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
     answerFormatId  Int
-    Category        QuestionCategory  @relation(fields: [categoryId], references: [id])
+    category        QuestionCategory  @relation(fields: [categoryId], references: [id])
     categoryId      Int
-    PatientResponse PatientResponse[]
+    patientResponse PatientResponse[]
 }
 
 model AnswerFormat {
     id             Int              @id @default(autoincrement())
-    name           String           @db.VarChar(50)
-    Question       Question[]
-    ResponseOption ResponseOption[]
+    name           String           @unique @db.VarChar(50)
+    question       Question[]
+    responseOption ResponseOption[]
 }
 
 model QuestionCategory {
     id       Int        @id @default(autoincrement())
-    name     String     @db.VarChar(50)
-    Question Question[]
+    name     String     @unique @db.VarChar(50)
+    question Question[]
 }
 
 model PatientResponse {
     id               Int            @id @default(autoincrement())
     createdAt        DateTime       @default(now())
-    Patient          Patient        @relation(fields: [patientId], references: [id])
+    patient          Patient        @relation(fields: [patientId], references: [id])
     patientId        String
-    Question         Question       @relation(fields: [questionId], references: [id])
+    question         Question       @relation(fields: [questionId], references: [id])
     questionId       Int
-    ResponseOption   ResponseOption @relation(fields: [responseOptionId], references: [id])
+    responseOption   ResponseOption @relation(fields: [responseOptionId], references: [id])
     responseOptionId Int
 }
 
 model ResponseOption {
     id              Int               @id @default(autoincrement())
-    AnswerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
+    answerFormat    AnswerFormat      @relation(fields: [answerFormatId], references: [id])
     answerFormatId  Int
-    responsevalue   String            @db.VarChar(255)
-    PatientResponse PatientResponse[]
+    responsevalue   String            @unique @db.VarChar(255)
+    patientResponse PatientResponse[]
 }
 
 model DailyResults {
