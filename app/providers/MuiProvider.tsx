@@ -1,7 +1,7 @@
 import { CacheProvider } from '@emotion/react';
 import { ThemeProvider } from '@mui/material';
 import createCache from '@emotion/cache';
-import theme from './theme/theme';
+import theme from '../mui/theme/theme';
 
 function createEmotionCache() {
     return createCache({ key: 'css' });

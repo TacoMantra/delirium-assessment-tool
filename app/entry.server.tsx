@@ -11,7 +11,8 @@ import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
-import { MuiProvider } from './mui/MuiProvider';
+import { MuiProvider } from './providers/MuiProvider';
+import LocalizationProvider from './providers/LocalizationProvider';
 
 const ABORT_DELAY = 5_000;
 
@@ -100,11 +101,13 @@ function handleBrowserRequest(
         let shellRendered = false;
         const { pipe, abort } = renderToPipeableStream(
             <MuiProvider>
-                <RemixServer
-                    context={remixContext}
-                    url={request.url}
-                    abortDelay={ABORT_DELAY}
-                />
+                <LocalizationProvider>
+                    <RemixServer
+                        context={remixContext}
+                        url={request.url}
+                        abortDelay={ABORT_DELAY}
+                    />
+                </LocalizationProvider>
             </MuiProvider>,
             {
                 onShellReady() {

@@ -1,17 +1,18 @@
+import dayjs from 'dayjs';
 import { prisma } from '~/db/prisma';
 
 export async function createPatient(
     firstName: string,
     lastName: string,
-    // dateOfBirth: Date,
     gender: string,
-    userId: string
+    userId: string,
+    dateOfBirth: string
 ) {
-    await prisma.patient.create({
+    const patient = await prisma.patient.create({
         data: {
             firstname: firstName,
             lastname: lastName,
-            dateofbirth: new Date(),
+            dateofbirth: dayjs(dateOfBirth).toDate(),
             gender: {
                 connect: { gender: gender },
             },
@@ -20,4 +21,6 @@ export async function createPatient(
             },
         },
     });
+
+    return patient;
 }

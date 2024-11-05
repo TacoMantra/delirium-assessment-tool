@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Container,
     FormLabel,
@@ -8,13 +9,18 @@ import {
     Button,
     Select,
     MenuItem,
+    InputLabel,
+    SelectChangeEvent,
 } from '@mui/material';
-import { Form } from '@remix-run/react';
-import { redirect, type ActionFunctionArgs } from '@remix-run/node';
+import { Form, useActionData } from '@remix-run/react';
+import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
 import StyledCard from '~/components/StyledCard';
 import AppAppBar from '~/components/AppAppBar';
 import { createPatient } from './queries';
 import { requireAuthCookie } from '~/auth/auth';
+import { DatePicker } from '@mui/x-date-pickers';
+import { Dayjs } from 'dayjs';
+import { validate } from './validate';
 
 export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
@@ -23,14 +29,28 @@ export async function action({ request }: ActionFunctionArgs) {
     const firstName = String(formData.get('firstName') ?? '');
     const lastName = String(formData.get('lastName') ?? '');
     const gender = String(formData.get('gender') ?? '');
+    const dateOfBirth = String(formData.get('dateOfBirth'));
 
-    await createPatient(firstName, lastName, gender, userId);
+    const errors = validate(firstName, lastName, dateOfBirth);
+
+    if (errors) {
+        return json({ ok: false, errors }, 400);
+    }
+
+    await createPatient(firstName, lastName, gender, userId, dateOfBirth);
 
     return redirect('/home');
 }
 
 export default function NewPatientForm() {
-    // const actionResult = useActionData<typeof action>();
+    const actionResult = useActionData<typeof action>();
+
+    const [gender, setGender] = useState('Other');
+    const [dateOfBirth, setDateOfBirth] = useState<Dayjs | null>(null);
+
+    const handleGenderChange = (event: SelectChangeEvent) => {
+        setGender(event.target.value as string);
+    };
 
     return (
         <>
@@ -53,7 +73,7 @@ export default function NewPatientForm() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: '100%',
-                                gap: 2,
+                                gap: 3,
                             }}
                         >
                             <FormControl>
@@ -61,7 +81,7 @@ export default function NewPatientForm() {
                                     First Name
                                 </FormLabel>
                                 <TextField
-                                    // helperText={actionResult?.errors?.firstName}
+                                    helperText={actionResult?.errors?.firstName}
                                     id="firstName"
                                     name="firstName"
                                     placeholder="First Name"
@@ -69,17 +89,17 @@ export default function NewPatientForm() {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    // color={
-                                    //     actionResult?.errors?.email
-                                    //         ? 'error'
-                                    //         : 'primary'
-                                    // }
+                                    color={
+                                        actionResult?.errors?.firstName
+                                            ? 'error'
+                                            : 'primary'
+                                    }
                                     sx={{ ariaLabel: 'firstName' }}
-                                    // aria-describedby={
-                                    //     actionResult?.errors?.email
-                                    //         ? 'email-error'
-                                    //         : 'login-header'
-                                    // }
+                                    aria-describedby={
+                                        actionResult?.errors?.firstName
+                                            ? 'email-error'
+                                            : 'login-header'
+                                    }
                                 />
                             </FormControl>
                             <FormControl>
@@ -87,7 +107,7 @@ export default function NewPatientForm() {
                                     First Name
                                 </FormLabel>
                                 <TextField
-                                    // helperText={actionResult?.errors?.email}
+                                    helperText={actionResult?.errors?.lastName}
                                     id="lastName"
                                     name="lastName"
                                     placeholder="Last Name"
@@ -95,41 +115,67 @@ export default function NewPatientForm() {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                    // color={
-                                    //     actionResult?.errors?.email
-                                    //         ? 'error'
-                                    //         : 'primary'
-                                    // }
+                                    color={
+                                        actionResult?.errors?.lastName
+                                            ? 'error'
+                                            : 'primary'
+                                    }
                                     sx={{ ariaLabel: 'lastName' }}
-                                    // aria-describedby={
-                                    //     actionResult?.errors?.email
-                                    //         ? 'email-error'
-                                    //         : 'login-header'
-                                    // }
+                                    aria-describedby={
+                                        actionResult?.errors?.lastName
+                                            ? 'email-error'
+                                            : 'login-header'
+                                    }
                                 />
                             </FormControl>
-                            <FormControl>
-                                <FormLabel htmlFor="gender">Gender</FormLabel>
+                            <FormControl fullWidth>
+                                <InputLabel id="gender-label">
+                                    Gender
+                                </InputLabel>
                                 <Select
-                                    fullWidth
+                                    labelId="gender-label"
                                     id="gender"
-                                    name="gender"
-                                    variant="outlined"
+                                    value={gender}
+                                    label="Gender"
+                                    onChange={handleGenderChange}
                                     required
-                                    sx={{ ariaLabel: 'gender' }}
                                 >
                                     <MenuItem value={'Male'}>Male</MenuItem>
                                     <MenuItem value={'Female'}>Female</MenuItem>
                                     <MenuItem value={'Nonbinary'}>
                                         Nonbinary
                                     </MenuItem>
-                                    <MenuItem value="Other">Other</MenuItem>
+                                    <MenuItem value={'Other'}>Other</MenuItem>
                                 </Select>
                             </FormControl>
+                            <FormControl>
+                                <FormLabel>Date Of Birth</FormLabel>
+                                <DatePicker
+                                    value={dateOfBirth}
+                                    onChange={(value) => setDateOfBirth(value)}
+                                    slotProps={{
+                                        textField: {
+                                            helperText:
+                                                actionResult?.errors
+                                                    ?.dateOfBirth,
+                                        },
+                                    }}
+                                />
+                            </FormControl>
                             <Button type="submit" fullWidth variant="contained">
-                                Sign in
+                                Begin Assessment
                             </Button>
                         </Box>
+                        <input type="hidden" name={'gender'} value={gender} />
+                        <input
+                            type="hidden"
+                            name={'dateOfBirth'}
+                            value={
+                                dateOfBirth?.isValid()
+                                    ? dateOfBirth.toISOString()
+                                    : ''
+                            }
+                        />
                     </Form>
                 </StyledCard>
             </Container>
