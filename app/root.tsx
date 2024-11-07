@@ -19,25 +19,15 @@ export function ErrorBoundary() {
     const error = useRouteError();
     console.error(error);
     return (
-        <html lang="en">
-            <head>
-                <title>Oh no!</title>
-                <Meta />
-                <Links />
-            </head>
-            <body>
-                <AppContainer direction="column" justifyContent="space-between">
-                    <StyledCard>
-                        <Typography variant="h1">Oh no!</Typography>
-                        <Typography>
-                            Looks like we encountered a problem. Please refresh
-                            and try again.
-                        </Typography>
-                    </StyledCard>
-                </AppContainer>
-                <Scripts />
-            </body>
-        </html>
+        <AppContainer direction="column" justifyContent="space-between">
+            <StyledCard>
+                <Typography variant="h1">Oh no!</Typography>
+                <Typography>
+                    Looks like we encountered a problem. Please refresh and try
+                    again.
+                </Typography>
+            </StyledCard>
+        </AppContainer>
     );
 }
 

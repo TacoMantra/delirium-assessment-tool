@@ -37,9 +37,15 @@ export async function action({ request }: ActionFunctionArgs) {
         return json({ ok: false, errors }, 400);
     }
 
-    await createPatient(firstName, lastName, gender, userId, dateOfBirth);
+    const patient = await createPatient(
+        firstName,
+        lastName,
+        gender,
+        userId,
+        dateOfBirth
+    );
 
-    return redirect('/home');
+    return redirect(`/patients/${patient.id}/questions/0`);
 }
 
 export default function NewPatientForm() {
