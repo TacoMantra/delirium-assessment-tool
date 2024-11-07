@@ -16,11 +16,11 @@ import { Form, useActionData } from '@remix-run/react';
 import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
 import StyledCard from '~/components/StyledCard';
 import AppAppBar from '~/components/AppAppBar';
-import { createPatient } from './queries';
+import createPatient from '~/queries/createPatient';
 import { requireAuthCookie } from '~/auth/auth';
 import { DatePicker } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
-import { validate } from './validate';
+import validateNewPatient from '~/validators/newPatient';
 
 export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
@@ -31,7 +31,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const gender = String(formData.get('gender') ?? '');
     const dateOfBirth = String(formData.get('dateOfBirth'));
 
-    const errors = validate(firstName, lastName, dateOfBirth);
+    const errors = validateNewPatient(firstName, lastName, dateOfBirth);
 
     if (errors) {
         return json({ ok: false, errors }, 400);

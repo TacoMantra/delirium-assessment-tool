@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { prisma } from '~/db/prisma';
 
-export async function createPatient(
+export default async function createPatient(
     firstName: string,
     lastName: string,
     gender: string,

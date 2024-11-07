@@ -1,7 +1,10 @@
 import { redirect } from '@remix-run/node';
 import { prisma } from '~/db/prisma';
 
-export async function getQuestionByOrder(order: number, patientId: string) {
+export default async function getQuestionByOrder(
+    order: number,
+    patientId: string
+) {
     try {
         const question = await prisma.question.findUniqueOrThrow({
             where: {

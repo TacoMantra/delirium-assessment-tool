@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export function validate(
+export default function validateNewPatient(
     firstName: string,
     lastName: string,
     dateOfBirth: string

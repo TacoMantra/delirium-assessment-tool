@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material';
 import StyledCard from '~/components/StyledCard';
-import { getQuestionByOrder } from './queries';
+import getQuestionByOrder from '~/queries/getQuestionByOrder';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 

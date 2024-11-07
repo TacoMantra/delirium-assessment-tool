@@ -1,4 +1,6 @@
-export function validate(email: string, password: string) {
+import accountExists from '~/queries/accountExists';
+
+export default async function validateSignup(email: string, password: string) {
     const errors: { email?: string; password?: string } = {};
 
     if (!email) {
@@ -9,8 +11,10 @@ export function validate(email: string, password: string) {
 
     if (!password) {
         errors.password = 'Password is required.';
-    } else if (password.length < 6) {
-        errors.password = 'Password must be at least 6 characters.';
+    }
+
+    if (!errors.email && (await accountExists(email))) {
+        errors.email = 'An account with this email already exists.';
     }
 
     return Object.keys(errors).length ? errors : null;

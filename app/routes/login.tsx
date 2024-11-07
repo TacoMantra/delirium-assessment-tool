@@ -1,9 +1,3 @@
-import { json, type ActionFunctionArgs, redirect } from '@remix-run/node';
-import { Form, Link, useActionData } from '@remix-run/react';
-import { redirectIfLoggedInLoader, setAuthOnResponse } from '~/auth/auth';
-import { validate } from './validate';
-import { createAccount } from './queries';
-import StyledCard from '~/components/StyledCard';
 import {
     Button,
     Box,
@@ -13,30 +7,43 @@ import {
     Typography,
     Container,
 } from '@mui/material';
+import { json, redirect, type DataFunctionArgs } from '@remix-run/node';
+import { Form, Link, useActionData } from '@remix-run/react';
+import { redirectIfLoggedInLoader, setAuthOnResponse } from '~/auth/auth';
+import validateLogin from '~/validators/login';
+import login from '~/queries/login';
+import StyledCard from '~/components/StyledCard';
 import AppAppBar from '~/components/AppAppBar';
 
 export const loader = redirectIfLoggedInLoader;
 
 export const meta = () => {
-    return [{ title: 'Signup' }];
+    return [{ title: 'Delirium Assessment Tool Login' }];
 };
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: DataFunctionArgs) {
     const formData = await request.formData();
+    const email = String(formData.get('email') ?? '');
+    const password = String(formData.get('password') ?? '');
 
-    const email = String(formData.get('email') || '');
-    const password = String(formData.get('password') || '');
-
-    const errors = await validate(email, password);
+    const errors = validateLogin(email, password);
     if (errors) {
         return json({ ok: false, errors }, 400);
     }
 
-    const user = await createAccount(email, password);
-    return setAuthOnResponse(redirect('/home'), user.id);
+    const userId = await login(email, password);
+    if (userId === false) {
+        return json(
+            { ok: false, errors: { password: 'Invalid credentials' } },
+            400
+        );
+    }
+
+    const response = redirect('/home');
+    return setAuthOnResponse(response, userId);
 }
 
-export default function Signup() {
+export default function LogIn() {
     const actionResult = useActionData<typeof action>();
 
     return (
@@ -52,7 +59,7 @@ export default function Signup() {
                             fontSize: 'clamp(2rem, 10vw, 2.15rem)',
                         }}
                     >
-                        Sign Up
+                        Sign in
                     </Typography>
                     <Form method="post">
                         <Box
@@ -119,18 +126,18 @@ export default function Signup() {
                                 />
                             </FormControl>
                             <Button type="submit" fullWidth variant="contained">
-                                Sign up
+                                Sign in
                             </Button>
                             <Typography sx={{ textAlign: 'center' }}>
-                                Already have an account?{' '}
+                                Don&apos;t have an account?{' '}
                                 <span>
-                                    <Link to="/login">
+                                    <Link to="/signup">
                                         <Typography
                                             component="span"
                                             variant="body2"
                                             sx={{ alignSelf: 'center' }}
                                         >
-                                            Sign in
+                                            Sign up
                                         </Typography>
                                     </Link>
                                 </span>

@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { prisma } from '~/db/prisma';
 
-export async function login(email: string, password: string) {
+export default async function login(email: string, password: string) {
     const user = await prisma.account.findUnique({
         where: { email: email },
         include: { password: true },
