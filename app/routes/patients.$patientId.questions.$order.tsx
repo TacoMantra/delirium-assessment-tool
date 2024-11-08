@@ -18,7 +18,7 @@ import {
 } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import AppAppBar from '~/components/AppAppBar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import answerQuestion from '~/queries/answerQuestion';
 
 export async function loader({ params }: LoaderFunctionArgs) {
