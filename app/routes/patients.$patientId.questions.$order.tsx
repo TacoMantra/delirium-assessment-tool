@@ -16,9 +16,9 @@ import {
     LoaderFunctionArgs,
     redirect,
 } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
+import { Form, useLoaderData, useParams } from '@remix-run/react';
 import AppAppBar from '~/components/AppAppBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import answerQuestion from '~/queries/answerQuestion';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -44,12 +44,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function Question() {
     const question = useLoaderData<typeof loader>();
+    const params = useParams();
 
     const [value, setValue] = useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
     };
+
+    useEffect(() => {
+        setValue('');
+    }, [params.order]);
 
     return (
         <>
@@ -83,7 +88,6 @@ export default function Question() {
                                     </FormLabel>
                                     <RadioGroup
                                         aria-labelledby="confusionLevelLabel"
-                                        defaultValue="Alert"
                                         name="yesNoGroup"
                                         value={value}
                                         onChange={handleChange}
