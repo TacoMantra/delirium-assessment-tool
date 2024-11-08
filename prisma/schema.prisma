@@ -98,6 +98,8 @@ model PatientResponse {
     questionId       Int
     responseOption   ResponseOption @relation(fields: [responseOptionId], references: [id])
     responseOptionId Int
+
+    @@unique([patientId, questionId]) // Composite unique constraint
 }
 
 model ResponseOption {
