@@ -18,7 +18,7 @@ import {
 } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import AppAppBar from '~/components/AppAppBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import answerQuestion from '~/queries/answerQuestion';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -45,7 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function Question() {
     const question = useLoaderData<typeof loader>();
 
-    const [value, setValue] = useState('No');
+    const [value, setValue] = useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
@@ -76,27 +76,64 @@ export default function Question() {
                                 gap: 3,
                             }}
                         >
-                            <FormControl>
-                                <FormLabel id="yesNoLabel">Yes or No</FormLabel>
-                                <RadioGroup
-                                    aria-labelledby="yesNoLabel"
-                                    defaultValue="no"
-                                    name="yesNoGroup"
-                                    value={value}
-                                    onChange={handleChange}
-                                >
-                                    <FormControlLabel
-                                        value="Yes"
-                                        control={<Radio />}
-                                        label="Yes"
-                                    />
-                                    <FormControlLabel
-                                        value="No"
-                                        control={<Radio />}
-                                        label="No"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
+                            {question.answerFormat.name === 'confusionLevel' ? (
+                                <FormControl>
+                                    <FormLabel id="confusionLevelLabel">
+                                        {'Confusion level'}
+                                    </FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="confusionLevelLabel"
+                                        defaultValue="Alert"
+                                        name="yesNoGroup"
+                                        value={value}
+                                        onChange={handleChange}
+                                    >
+                                        <FormControlLabel
+                                            value="Alert"
+                                            control={<Radio />}
+                                            label="Alert"
+                                        />
+                                        <FormControlLabel
+                                            value="Vigilant"
+                                            control={<Radio />}
+                                            label="Vigilant"
+                                        />
+                                        <FormControlLabel
+                                            value="Lethargic"
+                                            control={<Radio />}
+                                            label="Lethargic"
+                                        />
+                                        <FormControlLabel
+                                            value="Stupor"
+                                            control={<Radio />}
+                                            label="Stupor"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            ) : (
+                                <FormControl>
+                                    <FormLabel id="yesNoLabel">
+                                        Yes or No
+                                    </FormLabel>
+                                    <RadioGroup
+                                        aria-labelledby="yesNoLabel"
+                                        name="yesNoGroup"
+                                        value={value}
+                                        onChange={handleChange}
+                                    >
+                                        <FormControlLabel
+                                            value="Yes"
+                                            control={<Radio />}
+                                            label="Yes"
+                                        />
+                                        <FormControlLabel
+                                            value="No"
+                                            control={<Radio />}
+                                            label="No"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            )}
                             <Button type="submit" fullWidth variant="contained">
                                 Submit
                             </Button>
