@@ -36,10 +36,10 @@ model Patient {
     dateofbirth     DateTime          @db.Date()
     gender          Gender?           @relation(fields: [genderId], references: [id])
     genderId        Int?
-    riskAssessment  RiskAssessment[]
     patientResponse PatientResponse[]
     account         Account?          @relation(fields: [accountId], references: [id])
     accountId       String?
+    RiskAssessment  RiskAssessment[]
 }
 
 model Gender {

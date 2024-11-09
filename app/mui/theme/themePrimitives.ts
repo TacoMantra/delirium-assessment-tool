@@ -232,7 +232,7 @@ export const palette = {
     grey: {
         ...gray,
     },
-    divider: alpha(gray[300], 0.4),
+    divider: alpha(gray[700], 0.4),
     background: {
         default: 'hsl(0, 0%, 99%)',
         paper: 'hsl(220, 35%, 97%)',

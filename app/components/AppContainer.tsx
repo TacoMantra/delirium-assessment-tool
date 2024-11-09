@@ -5,7 +5,7 @@ const AppContainer = styled(Stack)(({ theme }) => ({
     padding: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
         padding: theme.spacing(4),
-        paddingTop: theme.spacing(32),
+        paddingTop: theme.spacing(24),
     },
     '&::before': {
         content: '""',

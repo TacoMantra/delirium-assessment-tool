@@ -3,7 +3,6 @@ import { Card, styled } from '@mui/material';
 const StyledCard = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    alignSelf: 'center',
     width: '100%',
     padding: theme.spacing(4),
     gap: theme.spacing(2),
