@@ -72,6 +72,8 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                                         variant="text"
                                         color="info"
                                         size="small"
+                                        component={Link}
+                                        to="/patients"
                                     >
                                         All Patients
                                     </Button>

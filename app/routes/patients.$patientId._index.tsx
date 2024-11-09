@@ -49,7 +49,11 @@ export default function Patient() {
             if (text === RiskAssessmentType.oneOrMoreRiskFactors) {
                 return palette.warning.light;
             }
-            if (text === RiskAssessmentType.noRisk) return palette.success.main;
+            if (text === RiskAssessmentType.noRisk) {
+                return palette.success.main;
+            }
+
+            return palette.text.primary;
         },
         [theme.palette]
     );
