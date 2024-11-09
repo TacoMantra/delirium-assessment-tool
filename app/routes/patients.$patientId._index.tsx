@@ -46,10 +46,10 @@ export default function Patient() {
             if (text === 'Lethargic' || text === RiskAssessmentType.atRisk) {
                 return palette.warning.main;
             }
-            if (text === 'One') {
+            if (text === RiskAssessmentType.oneOrMoreRiskFactors) {
                 return palette.warning.light;
             }
-            return palette.text.primary;
+            if (text === RiskAssessmentType.noRisk) return palette.success.main;
         },
         [theme.palette]
     );
@@ -80,11 +80,18 @@ export default function Patient() {
             { key: 'Gender', value: patient.gender?.gender },
             {
                 key: <strong>Risk Level</strong>,
-                value: <strong>{riskTypeFriendlyName}</strong>,
+                value: (
+                    <Typography
+                        color={getCriticalityColor(riskTypeFriendlyName)}
+                    >
+                        <strong>{riskTypeFriendlyName}</strong>
+                    </Typography>
+                ),
                 id: 'riskLevel',
             },
         ],
         [
+            getCriticalityColor,
             patient.createdAt,
             patient?.dateofbirth,
             patient.gender?.gender,
