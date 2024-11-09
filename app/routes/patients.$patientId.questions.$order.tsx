@@ -138,7 +138,12 @@ export default function Question() {
                                     </RadioGroup>
                                 </FormControl>
                             )}
-                            <Button type="submit" fullWidth variant="contained">
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                disabled={!value}
+                            >
                                 Submit
                             </Button>
                         </Box>

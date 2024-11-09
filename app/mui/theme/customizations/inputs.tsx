@@ -72,6 +72,12 @@ export const inputsCustomizations: Components<Theme> = {
                             '&:active': {
                                 backgroundColor: gray[800],
                             },
+                            '&.Mui-disabled': {
+                                backgroundColor: gray[400],
+                                color: gray[200],
+                                backgroundImage: 'none',
+                                borderColor: gray[500],
+                            },
                             ...theme.applyStyles('dark', {
                                 color: 'black',
                                 backgroundColor: gray[50],
