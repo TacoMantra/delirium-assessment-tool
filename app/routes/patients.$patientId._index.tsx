@@ -39,19 +39,28 @@ export default function Patient() {
             if (
                 text === 'Yes' ||
                 text === 'Stupor' ||
-                text === 'positiveDiagnosis'
+                text === RiskAssessmentType.positiveDiagnosis
             ) {
                 return palette.error.main;
             }
-            if (text === 'Lethargic' || text === 'At Risk') {
+            if (text === 'Lethargic' || text === RiskAssessmentType.atRisk) {
                 return palette.warning.main;
             }
-            if (text === 'oneOrMoreRiskFactors') {
+            if (text === 'One') {
                 return palette.warning.light;
             }
             return palette.text.primary;
         },
         [theme.palette]
+    );
+
+    const riskTypeFriendlyName = useMemo(
+        () =>
+            RiskAssessmentType[
+                patient.riskAssessment?.[0]?.risktype
+                    ?.name as keyof typeof RiskAssessmentType
+            ] ?? 'Unknown Risk',
+        [patient.riskAssessment]
     );
 
     const demographicRows = useMemo(
@@ -71,12 +80,7 @@ export default function Patient() {
             { key: 'Gender', value: patient.gender?.gender },
             {
                 key: <strong>Risk Level</strong>,
-                value: (
-                    <strong>
-                        {patient.riskAssessment?.[0]?.risktype?.name ??
-                            RiskAssessmentType.unknown}
-                    </strong>
-                ),
+                value: <strong>{riskTypeFriendlyName}</strong>,
                 id: 'riskLevel',
             },
         ],
@@ -84,7 +88,7 @@ export default function Patient() {
             patient.createdAt,
             patient?.dateofbirth,
             patient.gender?.gender,
-            patient.riskAssessment,
+            riskTypeFriendlyName,
         ]
     );
 
@@ -133,14 +137,9 @@ export default function Patient() {
                         <Typography
                             variant="h5"
                             component={'h2'}
-                            color={getCriticalityColor(
-                                patient.riskAssessment?.[0]?.risktype?.name
-                            )}
+                            color={getCriticalityColor(riskTypeFriendlyName)}
                         >
-                            {RiskAssessmentType[
-                                patient.riskAssessment?.[0]?.risktype
-                                    ?.name as keyof typeof RiskAssessmentType
-                            ] ?? 'Unknown Risk'}
+                            {riskTypeFriendlyName}
                         </Typography>
                     </Stack>
                     <Stack
