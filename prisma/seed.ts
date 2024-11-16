@@ -180,11 +180,23 @@ const main = async () => {
         ],
     });
 
+    const ageGroupTask = prisma.ageGroup.createMany({
+        data: [
+            { name: '0-17', minAge: 0, maxAge: 17 },
+            { name: '18-30', minAge: 18, maxAge: 30 },
+            { name: '31-40', minAge: 31, maxAge: 40 },
+            { name: '41-50', minAge: 41, maxAge: 50 },
+            { name: '51-60', minAge: 51, maxAge: 60 },
+            { name: '61+', minAge: 61 },
+        ],
+    });
+
     await Promise.all([
         questionTask,
         genderTask,
         riskTypeTask,
         responseOptionTask,
+        ageGroupTask,
     ]);
 };
 

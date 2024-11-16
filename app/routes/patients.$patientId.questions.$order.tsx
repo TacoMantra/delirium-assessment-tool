@@ -59,7 +59,7 @@ export default function Question() {
     return (
         <>
             <AppAppBar isAuthed={true} />
-            <Container maxWidth={'md'}>
+            <Container maxWidth={'sm'}>
                 <StyledCard variant="outlined">
                     <Typography
                         component="h1"

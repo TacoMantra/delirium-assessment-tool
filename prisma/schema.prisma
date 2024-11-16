@@ -39,13 +39,14 @@ model Patient {
     patientResponse PatientResponse[]
     account         Account?          @relation(fields: [accountId], references: [id])
     accountId       String?
-    RiskAssessment  RiskAssessment[]
+    riskAssessment  RiskAssessment[]
 }
 
 model Gender {
-    id      Int       @id @default(autoincrement())
-    gender  String    @unique @db.VarChar(50)
-    patient Patient[]
+    id           Int            @id @default(autoincrement())
+    gender       String         @unique @db.VarChar(50)
+    patient      Patient[]
+    dailyResults DailyResults[]
 }
 
 model RiskAssessment {
@@ -110,10 +111,24 @@ model ResponseOption {
     patientResponse PatientResponse[]
 }
 
+model AgeGroup {
+    id           Int            @id @default(autoincrement())
+    name         String         @unique @db.VarChar(50) // e.g., "18-30", "31-40"
+    minAge       Int // Minimum age in the group
+    maxAge       Int? // Maximum age in the group (null for open-ended ranges like "60+")
+    dailyResults DailyResults[]
+}
+
 model DailyResults {
-    id         Int      @id @default(autoincrement())
-    createdAt  DateTime @default(now())
-    RiskType   RiskType @relation(fields: [riskTypeId], references: [id])
+    id         Int       @id @default(autoincrement())
+    createdAt  DateTime  @default(now())
+    RiskType   RiskType  @relation(fields: [riskTypeId], references: [id])
     riskTypeId Int
     count      Int
+    gender     Gender?   @relation(fields: [genderId], references: [id])
+    genderId   Int?
+    ageGroup   AgeGroup? @relation(fields: [ageGroupId], references: [id])
+    ageGroupId Int?
+
+    @@unique([riskTypeId, ageGroupId, genderId, createdAt]) // Composite unique constraint
 }

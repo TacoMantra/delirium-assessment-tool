@@ -190,7 +190,7 @@ export default function Patient() {
                             <Table aria-label="patient resposne table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Question</TableCell>
+                                        <TableCell>Risk Factor</TableCell>
                                         <TableCell>Response</TableCell>
                                     </TableRow>
                                 </TableHead>
