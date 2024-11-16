@@ -1,4 +1,3 @@
-import { redirect } from '@remix-run/node';
 import { prisma } from '~/db/prisma';
 
 export default async function getPatientsByAccountId(
@@ -6,8 +5,16 @@ export default async function getPatientsByAccountId(
     skip?: number,
     take?: number
 ) {
-    try {
-        const patients = await prisma.patient.findMany({
+    const results = await Promise.all([
+        prisma.patient.findMany({
+            orderBy: [
+                {
+                    createdAt: 'desc',
+                },
+                {
+                    lastname: 'desc',
+                },
+            ],
             skip: skip ?? 0,
             take: take ?? 100,
             where: { accountId },
@@ -41,10 +48,9 @@ export default async function getPatientsByAccountId(
                     },
                 },
             },
-        });
+        }),
+        prisma.patient.count(),
+    ]);
 
-        return patients;
-    } catch {
-        return redirect(`/home`);
-    }
+    return results;
 }

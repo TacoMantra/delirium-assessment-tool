@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
     Table,
     TableBody,
@@ -15,29 +15,47 @@ import {
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { requireAuthCookie } from '~/auth/auth';
 import getPatientsByAccountId from '~/queries/getPatientsByAccountId';
-import { Link, useLoaderData } from '@remix-run/react';
-import { useAuth } from '~/providers/AuthProvider';
+import { Link, useLoaderData, useNavigate } from '@remix-run/react';
 import dayjs from 'dayjs';
 import StyledCard from '~/components/StyledCard';
 import AppAppBar from '~/components/AppAppBar';
 import RiskAssessmentType from '~/terms/riskAssessment';
 
 export async function loader({ request }: LoaderFunctionArgs) {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get('page') || '1');
+    const limit = Number(url.searchParams.get('limit') || '10');
+    const offset = (page - 1) * limit;
     const userId = await requireAuthCookie(request);
-    const initialPatients = await getPatientsByAccountId(userId, 0, 100);
 
-    return initialPatients;
+    const [patients, totalCount] = await getPatientsByAccountId(
+        userId,
+        offset,
+        limit
+    );
+
+    return { patients, totalCount, page, limit };
 }
 
 export default function Patients() {
-    const initialPatients = useLoaderData<typeof loader>();
-    const userId = String(useAuth());
+    const { patients, totalCount, page, limit } =
+        useLoaderData<typeof loader>();
     const theme = useTheme();
+    const navigate = useNavigate();
 
-    const [data, setData] = useState(initialPatients);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [totalCount, setTotalCount] = useState(0);
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number
+    ) => {
+        navigate(`/patients?page=${newPage + 1}&limit=${limit}`);
+    };
+
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const newLimit = parseInt(event.target.value, 10);
+        navigate(`/patients?page=${1}&limit=${newLimit}`);
+    };
 
     const getCriticalityColor = useCallback(
         (text: string) => {
@@ -61,35 +79,6 @@ export default function Patients() {
         [theme.palette]
     );
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await getPatientsByAccountId(
-                userId,
-                page * rowsPerPage,
-                rowsPerPage
-            );
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            setData(response as unknown as any);
-            setTotalCount((response as Array<unknown>).length);
-        };
-
-        fetchData();
-    }, [page, rowsPerPage, userId]);
-
-    const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number
-    ) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
     return (
         <Container maxWidth="lg">
             <AppAppBar isAuthed={true} />
@@ -103,13 +92,14 @@ export default function Patients() {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Name</TableCell>
+                                    <TableCell>Assessment Date</TableCell>
                                     <TableCell>Gender</TableCell>
                                     <TableCell>Date of Birth</TableCell>
                                     <TableCell>Risk Level</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data.map((row) => {
+                                {patients.map((row) => {
                                     const riskTypeFriendlyName =
                                         RiskAssessmentType[
                                             row.riskAssessment?.[0]?.risktype
@@ -123,6 +113,11 @@ export default function Patients() {
                                                     {row.firstname}{' '}
                                                     {row.lastname}
                                                 </Link>
+                                            </TableCell>
+                                            <TableCell>
+                                                {dayjs(row.createdAt)
+                                                    .format('MM/DD/YYYY')
+                                                    .toString()}
                                             </TableCell>
                                             <TableCell>
                                                 <Typography
@@ -163,8 +158,8 @@ export default function Patients() {
                         rowsPerPageOptions={[10, 25, 50]}
                         component="div"
                         count={totalCount}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
+                        rowsPerPage={limit}
+                        page={page - 1}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
