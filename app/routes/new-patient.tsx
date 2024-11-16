@@ -61,7 +61,7 @@ export default function NewPatientForm() {
     return (
         <>
             <AppAppBar isAuthed={true} />
-            <Container maxWidth={'md'}>
+            <Container maxWidth={'sm'}>
                 <StyledCard variant="outlined">
                     <Typography
                         component="h1"
