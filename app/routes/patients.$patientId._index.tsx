@@ -19,6 +19,7 @@ import AppAppBar from '~/components/AppAppBar';
 import StyledCard from '~/components/StyledCard';
 import getPatientById from '~/queries/getPatientById';
 import RiskAssessmentType from '~/terms/riskAssessment';
+import utc from 'dayjs/plugin/utc';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     const patientId = String(params.patientId);
@@ -31,6 +32,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function Patient() {
     const patient = useLoaderData<typeof loader>();
     const theme = useTheme();
+
+    dayjs.extend(utc);
 
     const getCriticalityColor = useCallback(
         (text: string) => {
@@ -76,7 +79,8 @@ export default function Patient() {
             },
             {
                 key: 'Date of Birth',
-                value: dayjs(patient?.dateofbirth)
+                value: dayjs
+                    .utc(patient?.dateofbirth)
                     .format('MM/DD/YYYY')
                     .toString(),
                 id: 'dob',

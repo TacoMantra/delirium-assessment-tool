@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import StyledCard from '~/components/StyledCard';
 import AppAppBar from '~/components/AppAppBar';
 import RiskAssessmentType from '~/terms/riskAssessment';
+import utc from 'dayjs/plugin/utc';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const url = new URL(request.url);
@@ -42,6 +43,8 @@ export default function Patients() {
         useLoaderData<typeof loader>();
     const theme = useTheme();
     const navigate = useNavigate();
+
+    dayjs.extend(utc);
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -134,7 +137,8 @@ export default function Patients() {
                                                         riskTypeFriendlyName
                                                     )}
                                                 >
-                                                    {dayjs(row.dateofbirth)
+                                                    {dayjs
+                                                        .utc(row.dateofbirth)
                                                         .format('MM/DD/YYYY')
                                                         .toString()}
                                                 </Typography>
