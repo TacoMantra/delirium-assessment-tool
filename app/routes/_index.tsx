@@ -1,9 +1,9 @@
-import { Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import { redirectIfLoggedInLoader } from '~/auth/auth';
 import StyledCard from '~/components/StyledCard';
-// import logo from '../assets/logo.png';
+import logo from '../assets/logo.png';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'Delirium Assessment Tool' }];
@@ -16,7 +16,7 @@ export default function Index() {
         <Container maxWidth={'sm'}>
             <StyledCard variant="outlined">
                 <Stack>
-                    {/* <Box
+                    <Box
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
@@ -27,7 +27,7 @@ export default function Index() {
                             height="120"
                             alt="Delirium Assessment Tool Logo"
                         />
-                    </Box> */}
+                    </Box>
                     <Typography
                         component="h1"
                         variant="h4"
