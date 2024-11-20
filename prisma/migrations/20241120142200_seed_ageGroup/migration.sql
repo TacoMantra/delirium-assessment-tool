@@ -1,5 +1,5 @@
 
-INSERT INTO "AgeGroup" (name, min_age, max_age)
+INSERT INTO "AgeGroup" (name, minAge, maxAge)
 VALUES
     ('0-17', 0, 17),
     ('18-30', 18, 30),
