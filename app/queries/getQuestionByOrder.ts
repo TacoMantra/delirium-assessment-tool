@@ -8,21 +8,29 @@ export default async function getQuestionByOrder(
     patientId: string
 ) {
     try {
-        const question = await prisma.question.findUniqueOrThrow({
-            where: {
-                order,
-            },
-            include: {
-                answerFormat: true,
-                category: true,
-            },
-        });
+        const count = await prisma.question.count();
 
-        return question;
+        if (order > count - 1) {
+            const question = await prisma.question.findUniqueOrThrow({
+                where: {
+                    order,
+                },
+                include: {
+                    answerFormat: true,
+                    category: true,
+                },
+            });
+
+            return question;
+        } else {
+            // No questions left to answer, create a risk assessment and navigate to patient summary
+            const riskAssessment = await getRiskAssessmentFromResponses(
+                patientId
+            );
+            await createRiskAssessment(patientId, riskAssessment);
+            return redirect(`/patients/${patientId}`);
+        }
     } catch {
-        // No questions left to answer, create a risk assessment and navigate to patient summary
-        const riskAssessment = await getRiskAssessmentFromResponses(patientId);
-        await createRiskAssessment(patientId, riskAssessment);
         return redirect(`/patients/${patientId}`);
     }
 }
