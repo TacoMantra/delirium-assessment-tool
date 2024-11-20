@@ -1,5 +1,5 @@
 import { styled, Box, AppBar, Toolbar, Button, Container } from '@mui/material';
-import logo from '../assets/logo.png';
+// import logo from '../assets/logo.png';
 import { Link } from '@remix-run/react';
 
 interface IAppAppBarProps {
@@ -41,12 +41,12 @@ export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
                             px: 0,
                         }}
                     >
-                        <img
+                        {/* <img
                             src={logo}
                             width="32"
                             height="32"
                             alt="Delirium Assessment Tool Logo"
-                        />
+                        /> */}
                         <Box sx={{ display: { xs: 'flex' } }}>
                             {isAuthed ? (
                                 <>
