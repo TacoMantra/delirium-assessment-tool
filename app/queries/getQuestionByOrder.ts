@@ -10,7 +10,7 @@ export default async function getQuestionByOrder(
     try {
         const count = await prisma.question.count();
 
-        if (order > count - 1) {
+        if (order < count - 1) {
             const question = await prisma.question.findUniqueOrThrow({
                 where: {
                     order,
