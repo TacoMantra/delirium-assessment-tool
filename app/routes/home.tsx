@@ -270,6 +270,13 @@ export default function Home() {
                                 fill="#2E5EAA"
                                 fillOpacity={0.4}
                             />
+                            <Radar
+                                name="61+"
+                                dataKey="61+"
+                                stroke="#EC0B43"
+                                fill="#EC0B43"
+                                fillOpacity={0.4}
+                            />
                             <Legend />
                         </RadarChart>
                     </StyledCard>
