@@ -1,6 +1,6 @@
 import { Container, Stack, Typography } from '@mui/material';
 import { useLoaderData } from '@remix-run/react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
     Legend,
     PolarAngleAxis,
