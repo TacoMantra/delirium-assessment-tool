@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material';
 import { useLoaderData } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     Legend,
     PolarAngleAxis,
@@ -35,52 +35,70 @@ export async function loader() {
 export default function Home() {
     const results = useLoaderData<typeof loader>();
 
-    const genderData = results.reduce((acc: Array<IRadarChartData>, curr) => {
-        const { riskType, gender, count } = curr;
+    const maxCount = useMemo(
+        () =>
+            results.reduce((max, obj) => {
+                const highestInObj = Math.max(
+                    ...Object.values(obj).filter(
+                        (value) => typeof value === 'number'
+                    )
+                );
+                return Math.max(max, highestInObj);
+            }, -Infinity),
+        [results]
+    );
 
-        const mappedRiskType =
-            RiskAssessmentType[riskType as keyof typeof RiskAssessmentType] ??
-            'Unknown';
+    const genderData = useMemo(
+        () =>
+            results.reduce((acc: Array<IRadarChartData>, curr) => {
+                const { riskType, gender, count } = curr;
 
-        // Find existing riskTypeData or create a new one
-        let riskTypeData = acc?.find(
-            (item) => item.riskType === mappedRiskType
-        );
-        if (!riskTypeData) {
-            riskTypeData = {
-                riskType: mappedRiskType,
-                male: 0,
-                female: 0,
-                nonBinary: 0,
-                otherGender: 0,
-                fullMark: 0,
-            };
-            acc.push(riskTypeData); // Add to accumulator if new
-        }
+                const mappedRiskType =
+                    RiskAssessmentType[
+                        riskType as keyof typeof RiskAssessmentType
+                    ] ?? 'Unknown';
 
-        // Update gender-specific count
-        switch (gender) {
-            case 'Male':
-                riskTypeData.male += count ?? 0;
-                break;
-            case 'Female':
-                riskTypeData.female += count ?? 0;
-                break;
-            case 'Nonbinary':
-                riskTypeData.nonBinary += count ?? 0;
-                break;
-            case 'Other':
-                riskTypeData.otherGender += count ?? 0;
-                break;
-        }
+                // Find existing riskTypeData or create a new one
+                let riskTypeData = acc?.find(
+                    (item) => item.riskType === mappedRiskType
+                );
+                if (!riskTypeData) {
+                    riskTypeData = {
+                        riskType: mappedRiskType,
+                        male: 0,
+                        female: 0,
+                        nonBinary: 0,
+                        otherGender: 0,
+                        fullMark: 0,
+                    };
+                    acc.push(riskTypeData); // Add to accumulator if new
+                }
 
-        riskTypeData.fullMark = Math.max(
-            riskTypeData.fullMark,
-            (count ?? 0) + 5
-        );
+                // Update gender-specific count
+                switch (gender) {
+                    case 'Male':
+                        riskTypeData.male += count ?? 0;
+                        break;
+                    case 'Female':
+                        riskTypeData.female += count ?? 0;
+                        break;
+                    case 'Nonbinary':
+                        riskTypeData.nonBinary += count ?? 0;
+                        break;
+                    case 'Other':
+                        riskTypeData.otherGender += count ?? 0;
+                        break;
+                }
 
-        return acc;
-    }, []);
+                riskTypeData.fullMark = Math.max(
+                    riskTypeData.fullMark,
+                    (count ?? 0) + 5
+                );
+
+                return acc;
+            }, []),
+        [results]
+    );
 
     useEffect(() => {
         console.log(genderData);
@@ -102,7 +120,10 @@ export default function Home() {
                     >
                         <PolarGrid />
                         <PolarAngleAxis dataKey="riskType" />
-                        <PolarRadiusAxis angle={30} domain={[0, 8]} />
+                        <PolarRadiusAxis
+                            angle={30}
+                            domain={[0, maxCount + 5]}
+                        />
                         <Radar
                             name="Male"
                             dataKey="male"
