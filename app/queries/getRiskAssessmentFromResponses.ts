@@ -2,31 +2,32 @@ import { prisma } from '~/db/prisma';
 import RiskAssessmentType from '~/terms/riskAssessment';
 
 /**
- * The Confusion Assessment Method (CAM) Diagnostic Algorithm.
- * Referenced from: https://www.va.gov/covidtraining/docs/The_Confusion_Assessment_Method.pdf
+ * Evaluates the patient's risk of delirium based on their responses to a set of questions and categories.
  *
- * This algorithm includes four key features to assess delirium:
+ * This function implements the Confusion Assessment Method (CAM) diagnostic algorithm to assess the risk of delirium.
+ * It checks for the presence of four key features: Acute Onset or Fluctuating Course, Inattention, Disorganized Thinking,
+ * and Altered Level of Consciousness. The presence of these features determines whether the patient is at risk, has one or
+ * more risk factors, or has no risk. The function returns a corresponding risk assessment type based on the patient's responses.
  *
- * **Feature 1: Acute Onset or Fluctuating Course**
- * - Obtained from a family member or nurse, this feature is indicated by positive responses to the following:
- *   - Is there evidence of an acute change in mental status from the patient’s baseline?
- *   - Did the abnormal behavior fluctuate during the day (come and go, or increase and decrease in severity)?
+ * **CAM Diagnostic Algorithm:**
+ * - **Feature 1 (Acute Onset or Fluctuating Course)**: Assessed based on responses about the patient's mental status and behavior.
+ * - **Feature 2 (Inattention)**: Assessed based on whether the patient had difficulty focusing attention.
+ * - **Feature 3 (Disorganized Thinking)**: Assessed based on whether the patient's thinking was disorganized or incoherent.
+ * - **Feature 4 (Altered Level of Consciousness)**: Assessed based on the patient's level of consciousness, with answers other than "alert" indicating potential altered consciousness.
  *
- * **Feature 2: Inattention**
- * - This is shown by a positive response to the question:
- *   - Did the patient have difficulty focusing attention, such as being easily distractible or having trouble keeping track of what was being said?
+ * To diagnose delirium, Features 1 and 2 must both be present, along with either Feature 3 or Feature 4. If the patient meets
+ * this criteria, they are diagnosed with a positive delirium diagnosis. If only two or more features are present, they are at
+ * risk for delirium. If one or more features are present, they have one or more risk factors. Otherwise, the patient is deemed
+ * to have no risk of delirium.
  *
- * **Feature 3: Disorganized Thinking**
- * - Indicated by a positive response to the question:
- *   - Was the patient’s thinking disorganized or incoherent, such as with rambling or irrelevant conversation, unclear or illogical ideas, or unpredictable topic changes?
- *
- * **Feature 4: Altered Level of Consciousness**
- * - Shown by any answer other than “alert” to the question:
- *   - Overall, how would you rate this patient’s level of consciousness? (Alert [normal], vigilant [hyperalert], lethargic [drowsy, easily aroused], stupor [difficult to arouse], or coma [unarousable])
- *
- * To diagnose delirium, CAM requires the presence of Features 1 and 2, as well as either Feature 3 or Feature 4.
+ * @param {string} patientId - The ID of the patient whose responses are being evaluated.
+ * @returns {Promise<keyof typeof RiskAssessmentType>} The risk assessment result:
+ * - `'positiveDiagnosis'`: Patient is diagnosed with delirium.
+ * - `'atRisk'`: Patient is at risk for delirium.
+ * - `'oneOrMoreRiskFactors'`: Patient has one or more risk factors for delirium.
+ * - `'noRisk'`: Patient has no risk of delirium.
+ * @throws {Error} Throws an error if there is an issue evaluating the patient's responses or fetching the data.
  */
-
 export default async function getRiskAssessmentFromResponses(
     patientId: string
 ) {

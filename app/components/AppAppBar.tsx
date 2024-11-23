@@ -20,6 +20,16 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: '8px 12px',
 }));
 
+/**
+ * A sitewide navigation bar.
+ *
+ * @component
+ * @param {string} props.isAuthed - Whether the user it authenticated.
+ * @returns {JSX.Element}
+ *
+ * @example
+ * <AppAppBar isAuthed={true} />
+ */
 export default function AppAppBar({ isAuthed }: IAppAppBarProps) {
     return (
         <AppBar

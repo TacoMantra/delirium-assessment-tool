@@ -1,5 +1,14 @@
 import { Card, styled } from '@mui/material';
 
+/**
+ * A MUI card component with themed styles applied.
+ *
+ * @component
+ * @returns {JSX.Element}
+ *
+ * @example
+ * <StyledCard />
+ */
 const StyledCard = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

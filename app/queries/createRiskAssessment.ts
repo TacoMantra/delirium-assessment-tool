@@ -2,6 +2,25 @@ import { prisma } from '~/db/prisma';
 import RiskAssessmentType from '~/terms/riskAssessment';
 import dayjs from 'dayjs';
 
+/**
+ * Creates a new risk assessment for a patient and updates daily results statistics.
+ *
+ * This function:
+ * - Verifies the existence of a `RiskType` based on the provided name.
+ * - Fetches the patient's gender and date of birth.
+ * - Determines the appropriate age group based on the patient's age.
+ * - Creates a new `RiskAssessment` entry.
+ * - Updates or creates the `DailyResults` record for tracking risk assessments by type, age group, and gender.
+ *
+ * @param {string} patientId - The ID of the patient for whom the risk assessment is created.
+ * @param {keyof typeof RiskAssessmentType} riskAssessmentType - The name of the risk type to assess.
+ * @returns {Promise<Object>} A promise that resolves to the created `RiskAssessment` object.
+ * @throws {Error} Throws an error if:
+ *   - The specified `RiskType` is not found.
+ *   - The patient data (gender or date of birth) is incomplete or missing.
+ *   - No `AgeGroup` matches the patient's age.
+ *   - A database operation fails.
+ */
 export default async function createRiskAssessment(
     patientId: string,
     riskAssessmentType: keyof typeof RiskAssessmentType

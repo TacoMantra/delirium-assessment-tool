@@ -1,5 +1,14 @@
 import { Stack, styled } from '@mui/material';
 
+/**
+ * A sitewide styled container for the app.
+ *
+ * @component
+ * @returns {JSX.Element}
+ *
+ * @example
+ * <AppContainer />
+ */
 const AppContainer = styled(Stack)(({ theme }) => ({
     minHeight: '100%',
     padding: theme.spacing(2),
