@@ -6,6 +6,7 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
+    Legend,
 } from 'recharts';
 import { AreaChartItem } from '~/queries/getRiskTrendsForLastNDays';
 import RiskAssessmentType from '~/terms/riskAssessment';
@@ -85,6 +86,7 @@ const RiskTypeTrendsCard: React.FC<IAreaChartCardProps> = ({ data, title }) => {
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
+                <Legend />
 
                 {/* Render Areas for Each Risk Type */}
                 {riskTypes.map((riskType) => (
