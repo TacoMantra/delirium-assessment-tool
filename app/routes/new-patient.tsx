@@ -110,7 +110,7 @@ export default function NewPatientForm() {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="lastName">
-                                    First Name
+                                    Last Name
                                 </FormLabel>
                                 <TextField
                                     helperText={actionResult?.errors?.lastName}
