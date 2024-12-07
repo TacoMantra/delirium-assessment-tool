@@ -26,6 +26,10 @@ export default async function validateSignup(email: string, password: string) {
         errors.password = 'Password is required.';
     }
 
+    if (password.length <= 8) {
+        errors.password = 'Password must be at least 8 characters.';
+    }
+
     if (!errors.email && (await accountExists(email))) {
         errors.email = 'An account with this email already exists.';
     }
